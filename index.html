@@ -83,12 +83,12 @@
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer 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',
+                        'Authorization': 'Bearer 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',
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'qwen/qwen3-235b-a22b-thinking-2507',
+                        model: 'qwen/qwen3-coder:free',
                         messages: [{ role: 'user', content: query }],
                         stream: false
                     })
