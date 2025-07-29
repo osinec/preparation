@@ -83,12 +83,12 @@
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI4MjAxYzA5LTExZDctNDM0NS04ZjRjLWY2MTJmNWYxNzRmYyIsImxhc3RfcGFzc3dvcmRfY2hhbmdlIjoxNzUwNjYwODczLCJleHAiOjE3NTYzNTc1MDR9.yTc139SQ4uBbBns5HmGkTeuoTP8ayCefMEtfneOnjjM',
+                        'Authorization': 'Bearer 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',
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'tngtech/deepseek-r1t2-chimera:free',
+                        model: 'qwen/qwen3-235b-a22b-thinking-2507',
                         messages: [{ role: 'user', content: query }],
                         stream: false
                     })
