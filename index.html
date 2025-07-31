@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>Чек-лист для подготовки к выступлению</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,6 +40,7 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -webkit-text-size-adjust: 100%;
+      overscroll-behavior: none;
     }
 
     .container {
@@ -96,6 +97,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .checklist-item input[type="checkbox"] {
@@ -109,6 +111,7 @@
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      touch-action: manipulation;
     }
 
     .checklist-item input[type="checkbox"]:checked {
@@ -135,8 +138,10 @@
       cursor: pointer;
       flex-grow: 1;
       word-break: break-word;
+      white-space: normal;
       padding: 4px 0;
       transition: color 0.3s ease;
+      line-height: 1.4;
     }
 
     .checklist-item .main-label.checked {
@@ -159,6 +164,7 @@
       align-items: center;
       gap: 4px;
       transition: background 0.3s ease, transform 0.2s ease;
+      touch-action: manipulation;
     }
 
     .checklist-item .edit-main-label:hover {
@@ -186,13 +192,15 @@
     }
 
     .sub-list li {
-      margin: 8px 0;
+      margin: 12px 0;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       padding: 8px 12px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.95);
       transition: background 0.3s ease;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .sub-list li:hover {
@@ -210,6 +218,7 @@
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      touch-action: manipulation;
     }
 
     .sub-list input[type="checkbox"]:checked {
@@ -235,6 +244,8 @@
       cursor: pointer;
       flex-grow: 1;
       word-break: break-word;
+      white-space: normal;
+      line-height: 1.4;
     }
 
     .sub-list .checked label {
@@ -255,6 +266,7 @@
       align-items: center;
       gap: 6px;
       transition: background 0.3s ease, transform 0.2s ease;
+      touch-action: manipulation;
     }
 
     .add-button:hover {
@@ -279,6 +291,7 @@
       max-width: 320px;
       transition: all 0.3s ease;
       box-shadow: var(--shadow-md);
+      touch-action: manipulation;
     }
 
     .add-main-item-button {
@@ -344,6 +357,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       transition: all 0.3s ease;
+      touch-action: manipulation;
     }
 
     .ok-button:hover {
@@ -366,6 +380,7 @@
       justify-content: center;
       transition: all 0.3s ease;
       margin-left: 8px;
+      touch-action: manipulation;
     }
 
     .delete-button:hover {
@@ -400,7 +415,8 @@
       position: absolute;
       left: -9999px;
       top: -9999px;
-      width: calc(100% - 40px);
+      width: 100%;
+      max-width: 800px;
       padding: 24px;
       background: var(--white);
       font-family: 'Montserrat', sans-serif;
@@ -416,6 +432,7 @@
       font-family: 'Playfair Display', serif;
       position: relative;
       padding-bottom: 12px;
+      line-height: 1.3;
     }
 
     #image-template h2::after {
@@ -437,15 +454,21 @@
       font-weight: 600;
       padding-left: 10px;
       border-left: 3px solid var(--primary);
+      line-height: 1.4;
+      word-break: break-word;
+      white-space: normal;
     }
 
     #image-template .sub-item {
       font-size: 0.95rem;
       margin-left: 24px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       color: var(--dark);
       position: relative;
       padding-left: 16px;
+      line-height: 1.4;
+      word-break: break-word;
+      white-space: normal;
     }
 
     #image-template .sub-item::before {
@@ -483,11 +506,16 @@
 
       .checklist-item .main-label {
         font-size: 1.1rem;
+        line-height: 1.5;
       }
 
       .sub-list {
         margin-left: 20px;
         padding: 12px;
+      }
+
+      .sub-list li {
+        margin: 10px 0;
       }
 
       .add-main-item-button, .download-button, .reset-button {
@@ -527,7 +555,8 @@
 
       .checklist-item .main-label {
         font-size: 1rem;
-        line-height: 1.4;
+        line-height: 1.5;
+        max-width: calc(100% - 80px);
       }
 
       .checklist-item .edit-main-label {
@@ -544,7 +573,9 @@
       }
 
       .sub-list li {
+        margin: 8px 0;
         padding: 6px 10px;
+        align-items: center;
       }
 
       .sub-list input[type="checkbox"] {
@@ -554,6 +585,8 @@
 
       .sub-list label {
         font-size: 0.9rem;
+        line-height: 1.5;
+        max-width: calc(100% - 50px);
       }
 
       .add-button {
@@ -576,6 +609,30 @@
         font-size: 0.9rem;
         padding: 8px 14px;
       }
+
+      .delete-button {
+        width: 22px;
+        height: 22px;
+      }
+
+      #image-template {
+        max-width: 100%;
+        padding: 16px;
+      }
+
+      #image-template h2 {
+        font-size: 1.4rem;
+      }
+
+      #image-template .list-item {
+        font-size: 1rem;
+      }
+
+      #image-template .sub-item {
+        font-size: 0.85rem;
+        margin-left: 16px;
+        margin-bottom: 10px;
+      }
     }
 
     /* Very small devices (400px and below) */
@@ -592,6 +649,7 @@
 
       .checklist-item .main-label {
         font-size: 0.95rem;
+        line-height: 1.6;
       }
 
       .sub-list {
@@ -599,8 +657,13 @@
         padding: 8px;
       }
 
+      .sub-list li {
+        margin: 6px 0;
+      }
+
       .sub-list label {
         font-size: 0.85rem;
+        line-height: 1.6;
       }
 
       .progress-text {
@@ -909,10 +972,8 @@
     <div id="image-content"></div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfkit/0.12.3/pdfkit.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blob-stream/0.1.3/blob-stream.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <script>
     function updateProgress() {
@@ -960,23 +1021,44 @@
         });
         
         const template = document.getElementById('image-template');
+        // Ensure template is visible for rendering
+        template.style.position = 'fixed';
+        template.style.left = '0';
+        template.style.top = '0';
+        template.style.width = window.innerWidth > 600 ? '800px' : `${window.innerWidth - 32}px`;
+        template.style.opacity = '0';
+        
         html2canvas(template, {
-          scale: 2,
+          scale: window.innerWidth < 600 ? 1.5 : 2,
           backgroundColor: '#ffffff',
           logging: false,
-          useCORS: true
+          useCORS: true,
+          windowWidth: window.innerWidth,
+          windowHeight: window.innerHeight,
+          onclone: (clonedDoc) => {
+            clonedDoc.getElementById('image-template').style.opacity = '1';
+          }
         }).then(canvas => {
-          const image = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.href = image;
-          link.download = 'чек-лист_выступление.png';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          // Reset template position
+          template.style.position = 'absolute';
+          template.style.left = '-9999px';
+          template.style.top = '-9999px';
+          template.style.opacity = '1';
+          
+          canvas.toBlob(blob => {
+            if (blob) {
+              saveAs(blob, 'чек-лист_выступление.png');
+            } else {
+              throw new Error('Failed to create blob');
+            }
+          }, 'image/png');
+        }).catch(error => {
+          console.error('Ошибка при генерации изображения:', error);
+          alert('Не удалось скачать изображение. Попробуйте использовать другой браузер или устройство.');
         });
       } catch (error) {
         console.error('Ошибка при генерации изображения:', error);
-        alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+        alert('Произошла ошибка при создании изображения. Попробуйте снова или используйте другой браузер.');
       }
     }
 
@@ -1234,16 +1316,21 @@
       if ('ontouchstart' in window) {
         document.querySelectorAll('.checklist-item, .sub-list li').forEach(item => {
           item.style.cursor = 'pointer';
-          item.addEventListener('touchstart', function() {
+          item.addEventListener('touchstart', function(e) {
             this.style.background = 'rgba(74, 85, 225, 0.05)';
+            e.preventDefault();
           });
           item.addEventListener('touchend', function() {
             this.style.background = '';
           });
         });
         
-        document.querySelectorAll('button').forEach(button => {
-          button.style.touchAction = 'manipulation';
+        document.querySelectorAll('button, input[type="checkbox"]').forEach(element => {
+          element.style.touchAction = 'manipulation';
+          element.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.target.click();
+          });
         });
       }
     });
