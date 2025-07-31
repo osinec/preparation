@@ -467,6 +467,78 @@
       color: var(--gray);
       margin-top: 3px;
     }
+
+    /* --- Стили для модального окна изображения --- */
+    .modal {
+      display: none; /* Скрыто по умолчанию */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 3% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: var(--danger);
+    }
+
+    #modalImageCanvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+    }
+
+    #downloadImageBtn {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
+      margin-top: 10px;
+    }
+
+    #downloadImageBtn:hover {
+      background: #e5177e;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
+    }
+
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
@@ -507,6 +579,18 @@
       .add-main-item-button, .download-button, .reset-button {
         font-size: 0.95rem;
         padding: 9px 18px;
+      }
+
+      /* Адаптация модального окна для мобильных */
+      .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 15px;
+      }
+      .close {
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
       }
     }
     /* Очень маленькие устройства (меньше 400px) */
@@ -806,7 +890,7 @@
       </li>
     </ul>
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
-    <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (JPG)</button>
+    <button class="download-button" onclick="showChecklistImage()">📷 Показать и скачать чек-лист (JPG)</button>
     <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
   </div>
   <!-- Скрытый шаблон для создания изображения -->
@@ -814,6 +898,18 @@
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
+
+  <!-- Модальное окно для отображения изображения -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Ваш чек-лист</h3>
+      <canvas id="modalImageCanvas"></canvas>
+      <br>
+      <button id="downloadImageBtn">💾 Скачать изображение</button>
+    </div>
+  </div>
+
   <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -835,8 +931,9 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-    // Функция для скачивания изображения списка
-    function downloadChecklistImage() {
+
+    // --- НОВАЯ ФУНКЦИЯ: Показать изображение в модальном окне ---
+    function showChecklistImage() {
       try {
         // Получаем все пункты
         const mainItems = document.querySelectorAll('.checklist-item');
@@ -862,40 +959,69 @@
           // Добавляем отступ между блоками
           imageContent.appendChild(document.createElement('br'));
         });
+
         // Создаем изображение из шаблона
         const template = document.getElementById('image-template');
-        // Добавляем обработчик для iOS
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          html2canvas(template, {
-            scale: 1,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true,
-            allowTaint: true
-          }).then(canvas => {
-            // Для iOS используем открытие в новом окне
-            canvas.toBlob(function(blob) {
-                saveAs(blob, 'чек-лист_выступление.jpg');
-            }, 'image/jpeg', 0.95); // JPEG с качеством 95%
-          });
-        } else {
-          // Для других устройств используем стандартный подход
-          html2canvas(template, {
-            scale: 2,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true
-          }).then(canvas => {
+
+        // Определяем параметры для html2canvas
+        let canvasOptions = {
+          scale: 2, // По умолчанию высокое качество
+          backgroundColor: '#ffffff',
+          logging: false,
+          useCORS: true,
+          allowTaint: true
+        };
+
+        // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
+        if (window.innerWidth <= 600) {
+          canvasOptions.scale = 1;
+        }
+
+        html2canvas(template, canvasOptions).then(canvas => {
+          // Отображаем модальное окно
+          const modal = document.getElementById('imageModal');
+          const modalImg = document.getElementById('modalImageCanvas');
+          const downloadBtn = document.getElementById('downloadImageBtn');
+          const span = document.getElementsByClassName("close")[0];
+
+          // Передаем содержимое canvas в модальное окно
+          modalImg.width = canvas.width;
+          modalImg.height = canvas.height;
+          const ctx = modalImg.getContext('2d');
+          ctx.drawImage(canvas, 0, 0);
+
+          modal.style.display = "block";
+
+          // Функция закрытия модального окна
+          span.onclick = function() {
+            modal.style.display = "none";
+          }
+
+          // Закрытие при клике вне изображения
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          }
+
+          // Функция скачивания изображения из модального окна
+          downloadBtn.onclick = function() {
             canvas.toBlob(function(blob) {
               saveAs(blob, 'чек-лист_выступление.jpg');
             }, 'image/jpeg', 0.95); // JPEG с качеством 95%
-          });
-        }
+          }
+
+        }).catch(error => {
+          console.error('Ошибка при генерации изображения:', error);
+          alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+        });
+
       } catch (error) {
-        console.error('Ошибка при генерации изображения:', error);
-        alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+        console.error('Ошибка при подготовке изображения:', error);
+        alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
       }
     }
+
     // Функция для сброса всех изменений
     function resetChecklist() {
       if (confirm('Вы уверены, что хотите сбросить все изменения? Все ваши отметки и добавленные пункты будут удалены.')) {
