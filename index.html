@@ -1,9 +1,12 @@
+Хорошо, вот код вашего сайта с изменённой функцией скачивания, использующей второй предложенный способ (конвертация в Data URL и открытие). Название сайта также изменено.
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Чек-лист для подготовки к выступлению</title>
+  <title>Чек-лист для подготовки к выступлению (Способ 2 - Data URL)</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -467,104 +470,6 @@
       color: var(--gray);
       margin-top: 3px;
     }
-
-    /* --- Стили для модального окна изображения --- */
-    .modal {
-      display: none; /* Скрыто по умолчанию */
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(5px);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 3% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 800px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      position: relative;
-      text-align: center;
-    }
-
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: var(--danger);
-    }
-
-    #modalImageCanvas {
-      max-width: 100%;
-      height: auto;
-      border-radius: 5px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 15px;
-    }
-
-    #downloadImageBtn {
-      padding: 10px 20px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
-      margin-top: 10px;
-    }
-
-    #downloadImageBtn:hover {
-      background: #e5177e;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
-    }
-
-    #downloadImageBtn:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* --- Стили для индикатора загрузки --- */
-    .loading {
-      display: none;
-      margin: 20px 0;
-    }
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--accent);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 2s linear infinite;
-      margin: 0 auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
@@ -606,18 +511,6 @@
         font-size: 0.95rem;
         padding: 9px 18px;
       }
-
-      /* Адаптация модального окна для мобильных */
-      .modal-content {
-        width: 95%;
-        margin: 5% auto;
-        padding: 15px;
-      }
-      .close {
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-      }
     }
     /* Очень маленькие устройства (меньше 400px) */
     @media only screen and (max-width: 400px) {
@@ -656,7 +549,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Чек-лист для подготовки к выступлению</h1>
+    <h1>Чек-лист для подготовки к выступлению (Способ 2 - Data URL)</h1>
     <div class="progress-container">
       <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -916,7 +809,7 @@
       </li>
     </ul>
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
-    <button class="download-button" onclick="showChecklistImage()">📷 Показать и скачать чек-лист (JPG)</button>
+    <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (JPG)</button>
     <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
   </div>
   <!-- Скрытый шаблон для создания изображения -->
@@ -924,24 +817,6 @@
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
-
-  <!-- Модальное окно для отображения изображения -->
-  <div id="imageModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h3>Ваш чек-лист</h3>
-      <canvas id="modalImageCanvas"></canvas>
-      <br>
-      <button id="downloadImageBtn">💾 Скачать изображение</button>
-      
-      <!-- Индикатор загрузки -->
-      <div class="loading" id="modalLoading">
-        <div class="spinner"></div>
-        <p>Подготовка файла к скачиванию...</p>
-      </div>
-    </div>
-  </div>
-
   <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
@@ -962,9 +837,8 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-
-    // --- ФУНКЦИЯ: Показать изображение в модальном окне ---
-    function showChecklistImage() {
+    // --- Обновленная функция для скачивания изображения списка (Способ 2) ---
+    function downloadChecklistImage() {
       try {
         // Получаем все пункты
         const mainItems = document.querySelectorAll('.checklist-item');
@@ -1009,87 +883,55 @@
         }
 
         html2canvas(template, canvasOptions).then(canvas => {
-          // Отображаем модальное окно
-          const modal = document.getElementById('imageModal');
-          const modalImg = document.getElementById('modalImageCanvas');
-          const downloadBtn = document.getElementById('downloadImageBtn');
-          const span = document.getElementsByClassName("close")[0];
-          const loadingIndicator = document.getElementById('modalLoading');
+          try {
+            // --- Способ 2: Конвертация в Data URL и открытие ---
+            // Конвертируем canvas в Data URL (JPEG с качеством 95%)
+            const dataURL = canvas.toDataURL('image/jpeg', 0.95);
 
-          // Передаем содержимое canvas в модальное окно
-          modalImg.width = canvas.width;
-          modalImg.height = canvas.height;
-          const ctx = modalImg.getContext('2d');
-          ctx.drawImage(canvas, 0, 0);
+            // Пытаемся открыть Data URL в новом окне/вкладке
+            const newWindow = window.open(dataURL, '_blank');
 
-          // Сбрасываем состояние кнопки скачивания
-          downloadBtn.disabled = false;
-          downloadBtn.textContent = "💾 Скачать изображение";
-          loadingIndicator.style.display = 'none';
-
-          modal.style.display = "block";
-
-          // Функция закрытия модального окна
-          span.onclick = function() {
-            modal.style.display = "none";
-          }
-
-          // Закрытие при клике вне изображения
-          window.onclick = function(event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
+            if (!newWindow) {
+              // Если window.open заблокирован, информируем пользователя
+              alert('Ваш браузер заблокировал автоматическое открытие изображения. Попробуйте вручную открыть ссылку ниже или нажмите на неё правой кнопкой мыши и выберите "Сохранить изображение как...".');
+              
+              // Создаем временную ссылку на странице
+              const tempLink = document.createElement('a');
+              tempLink.href = dataURL;
+              tempLink.target = '_blank'; // Открыть в новой вкладке на всякий случай
+              tempLink.download = 'чек-лист_выступление.jpg'; // Предлагаемое имя файла
+              tempLink.textContent = '👉 Открыть/Сохранить чек-лист (если не началось автоматически)';
+              tempLink.style.display = 'block';
+              tempLink.style.margin = '20px auto';
+              tempLink.style.padding = '15px';
+              tempLink.style.backgroundColor = '#4CAF50'; // Зелёный цвет для лучшей заметности
+              tempLink.style.color = 'white';
+              tempLink.style.textAlign = 'center';
+              tempLink.style.borderRadius = '8px';
+              tempLink.style.cursor = 'pointer';
+              tempLink.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+              tempLink.style.fontWeight = 'bold';
+              tempLink.style.maxWidth = '350px';
+              
+              // Вставляем ссылку после кнопки скачивания
+              const downloadButton = document.querySelector('.download-button');
+              if (downloadButton) {
+                  downloadButton.parentNode.insertBefore(tempLink, downloadButton.nextSibling);
+              } else {
+                  document.querySelector('.container').appendChild(tempLink);
+              }
+              
+              // Прокручиваем к ссылке
+              tempLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                // Если новое окно открылось, можно показать сообщение
+                // console.log('Изображение открыто в новом окне');
             }
+
+          } catch (error) {
+            console.error('Ошибка при конвертации или открытии изображения:', error);
+            alert('Произошла ошибка при обработке изображения для открытия.');
           }
-
-          // --- ФУНКЦИЯ СКАЧИВАНИЯ ---
-          downloadBtn.onclick = function() {
-            // Показываем индикатор загрузки и блокируем кнопку
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = "Подготовка...";
-            loadingIndicator.style.display = 'block';
-
-            // Конвертируем canvas в Blob
-            canvas.toBlob(function(blob) {
-                if (!blob) {
-                    console.error('Не удалось создать Blob из canvas');
-                    alert('Произошла ошибка при подготовке файла.');
-                    // Скрываем индикатор и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-                    return;
-                }
-
-                try {
-                    // Создаем URL для Blob
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = 'чек-лист_выступление.jpg';
-
-                    // Добавляем элемент в DOM, кликаем и удаляем
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-
-                    // Скрываем индикатор загрузки и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-
-                } catch (error) {
-                    console.error('Ошибка при скачивании:', error);
-                    alert('Произошла ошибка при скачивании файла.');
-                    // Скрываем индикатор и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-                }
-            }, 'image/jpeg', 0.95); // JPEG с качеством 95%
-          }
-
         }).catch(error => {
           console.error('Ошибка при генерации изображения:', error);
           alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
@@ -1100,7 +942,6 @@
         alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
       }
     }
-
     // Функция для сброса всех изменений
     function resetChecklist() {
       if (confirm('Вы уверены, что хотите сбросить все изменения? Все ваши отметки и добавленные пункты будут удалены.')) {
@@ -1324,3 +1165,4 @@
   </script>
 </body>
 </html>
+```
