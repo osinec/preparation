@@ -1,6 +1,3 @@
-Вот полный код HTML-страницы с чек-листом, в котором функция `downloadChecklistImage` обновлена для лучшей совместимости с мобильными устройствами:
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,9 +19,11 @@
       --gray: #adb5bd;
       --white: #ffffff;
     }
+    
     * {
       box-sizing: border-box;
     }
+    
     body {
       font-family: 'Montserrat', sans-serif;
       max-width: 900px;
@@ -36,9 +35,11 @@
       line-height: 1.6;
       -webkit-text-size-adjust: 100%;
     }
+    
     .container {
       padding: 20px 0 40px;
     }
+    
     h1 {
       font-family: 'Playfair Display', serif;
       text-align: center;
@@ -49,6 +50,7 @@
       padding-bottom: 15px;
       line-height: 1.3;
     }
+    
     h1::after {
       content: '';
       position: absolute;
@@ -60,11 +62,13 @@
       background: linear-gradient(90deg, var(--accent), var(--primary-light));
       border-radius: 2px;
     }
+    
     ul {
       list-style-type: none;
       padding-left: 0;
       margin: 0;
     }
+    
     .checklist-item {
       margin: 15px 0;
       padding: 15px;
@@ -76,10 +80,12 @@
       overflow: hidden;
       border-left: 4px solid var(--primary);
     }
+    
     .checklist-item:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
+    
     .checklist-item input[type="checkbox"] {
       -webkit-appearance: none;
       appearance: none;
@@ -94,10 +100,12 @@
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
+    
     .checklist-item input[type="checkbox"]:checked {
       background-color: var(--success);
       border-color: var(--success);
     }
+    
     .checklist-item input[type="checkbox"]:checked::after {
       content: '✓';
       position: absolute;
@@ -107,10 +115,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    
     .checklist-header {
       display: flex;
       align-items: center;
     }
+    
     .checklist-item .main-label {
       font-size: 1.1rem;
       font-weight: 600;
@@ -121,11 +131,14 @@
       margin-right: 40px;
       word-break: break-word;
       padding: 5px 0;
+      line-height: 1.4;
     }
+    
     .checklist-item .main-label.checked {
       color: var(--success);
       text-decoration: line-through;
     }
+    
     .checklist-item .edit-main-label {
       position: absolute;
       right: 15px;
@@ -142,10 +155,12 @@
       align-items: center;
       gap: 4px;
     }
+    
     .checklist-item .edit-main-label:hover {
       background: var(--primary);
       transform: scale(1.05);
     }
+    
     .sub-list {
       display: none;
       margin-left: 20px;
@@ -161,15 +176,18 @@
       transition: all 0.3s ease;
       border-left: 2px solid var(--primary-light);
     }
+    
     .sub-list.active {
       display: block;
       opacity: 1;
       transform: translateY(0);
     }
+    
     .sub-list ul {
       list-style-type: none;
       padding-left: 0;
     }
+    
     .sub-list li {
       margin: 6px 0;
       transition: all 0.3s ease;
@@ -179,9 +197,11 @@
       border-radius: 5px;
       background: rgba(255, 255, 255, 0.9);
     }
+    
     .sub-list li:hover {
       background: rgba(67, 97, 238, 0.1);
     }
+    
     .sub-list input[type="checkbox"] {
       -webkit-appearance: none;
       appearance: none;
@@ -196,10 +216,12 @@
       transition: all 0.2s ease;
       flex-shrink: 0;
     }
+    
     .sub-list input[type="checkbox"]:checked {
       background-color: var(--success);
       border-color: var(--success);
     }
+    
     .sub-list input[type="checkbox"]:checked::after {
       content: '✓';
       position: absolute;
@@ -209,6 +231,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    
     .sub-list label {
       font-size: 0.95rem;
       color: var(--dark);
@@ -217,10 +240,12 @@
       flex-grow: 1;
       word-break: break-word;
     }
+    
     .sub-list .checked label {
       color: var(--success);
       text-decoration: line-through;
     }
+    
     .add-button {
       margin-top: 12px;
       padding: 7px 12px;
@@ -236,10 +261,12 @@
       gap: 5px;
       width: fit-content;
     }
+    
     .add-button:hover {
       background: var(--primary);
       transform: translateY(-2px);
     }
+    
     .add-main-item-button {
       margin: 25px auto;
       padding: 10px 20px;
@@ -259,17 +286,20 @@
       max-width: 300px;
       box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
     }
+    
     .add-main-item-button:hover {
       background: var(--secondary);
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
     }
+    
     .add-input-container {
       display: flex;
       flex-direction: column;
       margin-top: 12px;
       gap: 8px;
     }
+    
     .add-input {
       padding: 10px 12px;
       width: 100%;
@@ -279,11 +309,13 @@
       transition: all 0.3s ease;
       font-family: 'Montserrat', sans-serif;
     }
+    
     .add-input:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
     }
+    
     .ok-button {
       padding: 8px 16px;
       background: var(--success);
@@ -296,10 +328,12 @@
       transition: all 0.3s ease;
       width: 100%;
     }
+    
     .ok-button:hover {
       background: #3aa8d8;
       transform: translateY(-1px);
     }
+    
     .delete-button {
       background: var(--danger);
       color: white;
@@ -317,10 +351,12 @@
       flex-shrink: 0;
       margin-left: 8px;
     }
+    
     .delete-button:hover {
       background: #d90429;
       transform: scale(1.05);
     }
+    
     .edit-input-container {
       display: flex;
       flex-direction: column;
@@ -328,6 +364,7 @@
       width: 100%;
       gap: 8px;
     }
+    
     .edit-input {
       padding: 10px 12px;
       width: 100%;
@@ -337,11 +374,13 @@
       font-family: 'Montserrat', sans-serif;
       transition: all 0.3s ease;
     }
+    
     .edit-input:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
     }
+    
     .download-button {
       display: block;
       margin: 30px auto;
@@ -362,11 +401,13 @@
       width: 100%;
       max-width: 300px;
     }
+    
     .download-button:hover {
       background: #e5177e;
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
     }
+    
     .reset-button {
       display: block;
       margin: 15px auto 30px;
@@ -387,11 +428,13 @@
       width: 100%;
       max-width: 300px;
     }
+    
     .reset-button:hover {
       background: #e07c0c;
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(248, 150, 30, 0.3);
     }
+    
     #image-template {
       position: absolute;
       left: -9999px;
@@ -403,6 +446,7 @@
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
+    
     #image-template h2 {
       text-align: center;
       color: var(--secondary);
@@ -412,6 +456,7 @@
       position: relative;
       padding-bottom: 10px;
     }
+    
     #image-template h2::after {
       content: '';
       position: absolute;
@@ -423,6 +468,7 @@
       background: linear-gradient(90deg, var(--accent), var(--primary-light));
       border-radius: 2px;
     }
+    
     #image-template .list-item {
       font-size: 1rem;
       margin-bottom: 12px;
@@ -431,6 +477,7 @@
       padding-left: 8px;
       border-left: 2px solid var(--primary);
     }
+    
     #image-template .sub-item {
       font-size: 0.9rem;
       margin-left: 20px;
@@ -439,6 +486,7 @@
       position: relative;
       padding-left: 12px;
     }
+    
     #image-template .sub-item::before {
       content: '';
       position: absolute;
@@ -449,6 +497,7 @@
       background: var(--primary-light);
       border-radius: 50%;
     }
+    
     .progress-container {
       width: 100%;
       height: 6px;
@@ -457,88 +506,108 @@
       margin-bottom: 20px;
       overflow: hidden;
     }
+    
     .progress-bar {
       height: 100%;
       background: linear-gradient(90deg, var(--primary-light), var(--accent));
       border-radius: 3px;
       transition: width 0.5s ease;
     }
+    
     .progress-text {
       text-align: center;
       font-size: 0.85rem;
       color: var(--gray);
       margin-top: 3px;
     }
+    
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
         padding: 0 10px;
       }
+      
       .container {
         padding: 15px 0 30px;
       }
+      
       h1 {
         font-size: 1.5rem;
         margin-bottom: 20px;
         padding-bottom: 10px;
       }
+      
       .checklist-item {
         padding: 12px;
         margin: 12px 0;
       }
+      
       .checklist-item .main-label {
         font-size: 1rem;
         margin-right: 35px;
       }
+      
       .checklist-item .edit-main-label {
         right: 12px;
         top: 12px;
         padding: 3px 6px;
         font-size: 0.75rem;
       }
+      
       .sub-list {
         margin-left: 15px;
         padding: 10px;
       }
+      
       .sub-list li {
         padding: 5px 8px;
       }
+      
       .add-button, .ok-button, .delete-button {
         font-size: 0.85rem;
       }
+      
       .add-main-item-button, .download-button, .reset-button {
         font-size: 0.95rem;
         padding: 9px 18px;
       }
     }
+    
     /* Очень маленькие устройства (меньше 400px) */
     @media only screen and (max-width: 400px) {
       h1 {
         font-size: 1.3rem;
       }
+      
       .checklist-item {
         padding: 10px;
       }
+      
       .checklist-item .main-label {
         font-size: 0.95rem;
       }
+      
       .sub-list label {
         font-size: 0.9rem;
       }
     }
+    
     /* Ландшафтная ориентация */
     @media screen and (max-width: 900px) and (orientation: landscape) {
       .container {
         padding: 15px 0 25px;
       }
+      
       h1 {
         font-size: 1.4rem;
         margin-bottom: 15px;
       }
+      
       .checklist-item {
         margin: 10px 0;
         padding: 10px;
       }
+      
       .sub-list {
         margin-left: 15px;
         padding: 8px;
@@ -549,10 +618,12 @@
 <body>
   <div class="container">
     <h1>Чек-лист для подготовки к выступлению</h1>
+    
     <div class="progress-container">
       <div class="progress-bar" id="progressBar"></div>
     </div>
     <div class="progress-text" id="progressText">0% завершено</div>
+    
     <ul id="main-checklist">
       <li class="checklist-item">
         <div class="checklist-header">
@@ -807,28 +878,32 @@
         </div>
       </li>
     </ul>
+    
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
     <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (PNG)</button>
     <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
   </div>
+
   <!-- Скрытый шаблон для создания изображения -->
   <div id="image-template">
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
+
   <!-- Подключаем необходимые библиотеки -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfkit/0.12.3/pdfkit.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blob-stream/0.1.3/blob-stream.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <script>
     // Функция для обновления прогресса
     function updateProgress() {
       const totalItems = document.querySelectorAll('.checklist-item input[type="checkbox"], .sub-list input[type="checkbox"]').length;
       const checkedItems = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked, .sub-list input[type="checkbox"]:checked').length;
       const progress = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+      
       document.getElementById('progressBar').style.width = `${progress}%`;
       document.getElementById('progressText').textContent = `${progress}% завершено`;
+      
       // Изменение цвета прогресс-бара в зависимости от прогресса
       const progressBar = document.getElementById('progressBar');
       if (progress < 30) {
@@ -839,21 +914,28 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-    // Функция для скачивания изображения списка (обновленная версия)
+
+    // Функция для скачивания изображения списка
     function downloadChecklistImage() {
       try {
+        // Показываем уведомление о начале процесса
+        alert('Начато создание изображения. Пожалуйста, подождите...');
+        
         // Получаем все пункты
         const mainItems = document.querySelectorAll('.checklist-item');
         const imageContent = document.getElementById('image-content');
         imageContent.innerHTML = '';
+        
         // Создаем структуру для изображения
         mainItems.forEach(item => {
-          const mainLabel = item.querySelector('.main-label').textContent;
+          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
+          
           // Добавляем главный пункт
           const mainItemDiv = document.createElement('div');
           mainItemDiv.className = 'list-item';
           mainItemDiv.textContent = mainLabel;
           imageContent.appendChild(mainItemDiv);
+          
           // Добавляем подпункты
           const subItems = item.querySelectorAll('.sub-list li');
           subItems.forEach(subItem => {
@@ -863,42 +945,48 @@
             subItemDiv.textContent = subLabel;
             imageContent.appendChild(subItemDiv);
           });
+          
           // Добавляем отступ между блоками
           imageContent.appendChild(document.createElement('br'));
         });
+        
         // Создаем изображение из шаблона
         const template = document.getElementById('image-template');
-        html2canvas(template, {
-          scale: 2,
-          backgroundColor: '#ffffff',
-          logging: false,
-          useCORS: true
-        }).then(canvas => {
-          // Преобразуем canvas в Blob и скачиваем
-          canvas.toBlob(function(blob) {
-            if (blob) {
-              const link = document.createElement('a');
-              const url = URL.createObjectURL(blob);
-              link.href = url;
-              link.download = 'чек-лист_выступление.png';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-              // Освобождаем объект URL
-              setTimeout(() => URL.revokeObjectURL(url), 100);
-            } else {
-              throw new Error('Не удалось создать Blob изображения');
-            }
-          }, 'image/png');
-        }).catch(error => {
-          console.error('Ошибка при генерации canvas:', error);
-          alert('Произошла ошибка при создании изображения (canvas). Пожалуйста, попробуйте еще раз.');
-        });
+        
+        // Добавляем обработчик для iOS
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          html2canvas(template, {
+            scale: 1,
+            backgroundColor: '#ffffff',
+            logging: false,
+            useCORS: true,
+            allowTaint: true
+          }).then(canvas => {
+            // Для iOS используем открытие в новом окне
+            const imgData = canvas.toDataURL('image/png');
+            const newWindow = window.open();
+            newWindow.document.write('<img src="' + imgData + '" />');
+          });
+        } else {
+          // Для других устройств используем стандартный подход
+          html2canvas(template, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            logging: false,
+            useCORS: true
+          }).then(canvas => {
+            canvas.toBlob(function(blob) {
+              saveAs(blob, 'чек-лист_выступление.png');
+              alert('Изображение готово к скачиванию. Если загрузка не началась автоматически, проверьте папку "Загрузки".');
+            }, 'image/png');
+          });
+        }
       } catch (error) {
         console.error('Ошибка при генерации изображения:', error);
         alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
       }
     }
+
     // Функция для сброса всех изменений
     function resetChecklist() {
       if (confirm('Вы уверены, что хотите сбросить все изменения? Все ваши отметки и добавленные пункты будут удалены.')) {
@@ -906,12 +994,14 @@
         location.reload();
       }
     }
+
     // Остальные функции чек-листа
     function toggleSubList(label) {
       const subList = label.closest('.checklist-item').querySelector('.sub-list');
       subList.classList.toggle('active');
       updateProgress();
     }
+
     function toggleChecked(checkbox) {
       const item = checkbox.nextElementSibling;
       if (checkbox.checked) {
@@ -922,24 +1012,30 @@
       saveChecklistState();
       updateProgress();
     }
+
     function showAddInput(button) {
       const subList = button.parentElement;
       let inputContainer = subList.querySelector('.add-input-container');
+      
       if (inputContainer) {
         inputContainer.remove();
         return;
       }
+      
       inputContainer = document.createElement('div');
       inputContainer.className = 'add-input-container';
+      
       const input = document.createElement('input');
       input.type = 'text';
       input.className = 'add-input';
       input.placeholder = 'Введите новый подпункт';
+      
       input.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && this.value.trim()) {
           addNewSubItem(this);
         }
       });
+      
       const okButton = document.createElement('button');
       okButton.className = 'ok-button';
       okButton.textContent = 'Добавить';
@@ -948,29 +1044,37 @@
           addNewSubItem(input);
         }
       };
+      
       inputContainer.appendChild(input);
       inputContainer.appendChild(okButton);
       subList.insertBefore(inputContainer, button);
       input.focus();
     }
+
     function addNewSubItem(input) {
       const subListUl = input.closest('.sub-list').querySelector('ul');
       const newItemText = input.value.trim();
+      
       if (newItemText) {
         const li = document.createElement('li');
         li.className = 'custom-item';
+        
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.onchange = function() { toggleChecked(this); };
+        
         const label = document.createElement('label');
         label.textContent = newItemText;
+        
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
         deleteButton.textContent = '×';
         deleteButton.onclick = function() { removeSubItem(this); };
+        
         li.appendChild(checkbox);
         li.appendChild(label);
         li.appendChild(deleteButton);
+        
         subListUl.appendChild(li);
         input.value = '';
         input.focus();
@@ -978,17 +1082,21 @@
         updateProgress();
       }
     }
+
     function removeSubItem(button) {
       const li = button.parentElement;
       li.remove();
       saveChecklistState();
       updateProgress();
     }
+
     function addNewMainItem() {
       const mainList = document.getElementById('main-checklist');
       const newId = 'item' + (mainList.children.length + 1);
+      
       const newItem = document.createElement('li');
       newItem.className = 'checklist-item';
+      
       newItem.innerHTML = `
         <div class="checklist-header">
           <input type="checkbox" id="${newId}" onchange="toggleChecked(this)">
@@ -1000,21 +1108,26 @@
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       `;
+      
       mainList.appendChild(newItem);
       saveChecklistState();
       updateProgress();
       editMainItem(newItem.querySelector('.edit-main-label'));
     }
+
     function editMainItem(button) {
       const item = button.closest('.checklist-item');
       const label = item.querySelector('.main-label');
       const currentText = label.textContent;
+      
       const editContainer = document.createElement('div');
       editContainer.className = 'edit-input-container';
+      
       const input = document.createElement('input');
       input.type = 'text';
       input.className = 'edit-input';
       input.value = currentText;
+      
       const saveButton = document.createElement('button');
       saveButton.className = 'ok-button';
       saveButton.textContent = 'Сохранить';
@@ -1027,20 +1140,26 @@
           saveChecklistState();
         }
       };
+      
       input.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && this.value.trim()) {
           saveButton.click();
         }
       });
+      
       editContainer.appendChild(input);
       editContainer.appendChild(saveButton);
+      
       label.style.display = 'none';
       button.style.display = 'none';
+      
       const subList = item.querySelector('.sub-list');
       item.insertBefore(editContainer, subList);
+      
       input.focus();
       input.select();
     }
+
     function saveChecklistState() {
       const checklistData = {};
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1050,6 +1169,7 @@
           mainLabel: item.querySelector('.main-label').textContent,
           subItems: []
         };
+        
         const subList = item.querySelector('.sub-list ul');
         subList.querySelectorAll('li').forEach(li => {
           const label = li.querySelector('label').textContent;
@@ -1058,36 +1178,47 @@
           checklistData[itemId].subItems.push({ label, checked, isCustom });
         });
       });
+      
       localStorage.setItem('checklistState', JSON.stringify(checklistData));
     }
+
     function loadChecklistState() {
       const checklistData = JSON.parse(localStorage.getItem('checklistState') || '{}');
+      
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
         const itemId = `item${index + 1}`;
         const data = checklistData[itemId];
+        
         if (data) {
           const mainCheckbox = item.querySelector('input[type="checkbox"]');
           const mainLabel = item.querySelector('.main-label');
           mainCheckbox.checked = data.checked;
           mainLabel.textContent = data.mainLabel || mainLabel.textContent;
+          
           if (data.checked) {
             mainLabel.classList.add('checked');
           }
+          
           const subListUl = item.querySelector('.sub-list ul');
           subListUl.innerHTML = '';
+          
           data.subItems.forEach(subItem => {
             const li = document.createElement('li');
             if (subItem.isCustom) {
               li.className = 'custom-item';
             }
+            
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = subItem.checked;
             checkbox.onchange = function() { toggleChecked(this); };
+            
             const label = document.createElement('label');
             label.textContent = subItem.label;
+            
             li.appendChild(checkbox);
             li.appendChild(label);
+            
             if (subItem.isCustom) {
               const deleteButton = document.createElement('button');
               deleteButton.className = 'delete-button';
@@ -1095,6 +1226,7 @@
               deleteButton.onclick = function() { removeSubItem(this); };
               li.appendChild(deleteButton);
             }
+            
             subListUl.appendChild(li);
             if (subItem.checked) {
               label.classList.add('checked');
@@ -1104,15 +1236,18 @@
       });
       updateProgress();
     }
+
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
+      
       // Оптимизация для мобильных устройств
       if ('ontouchstart' in window) {
         // Увеличиваем область клика для чекбоксов
         document.querySelectorAll('.checklist-item, .sub-list li').forEach(item => {
           item.style.cursor = 'pointer';
         });
+        
         // Улучшаем отзывчивость кнопок
         document.querySelectorAll('button').forEach(button => {
           button.style.touchAction = 'manipulation';
