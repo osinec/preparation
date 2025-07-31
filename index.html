@@ -20,29 +20,35 @@
       --white: #ffffff;
     }
     
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Montserrat', sans-serif;
       max-width: 900px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 15px;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
       min-height: 100vh;
       color: var(--dark);
       line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
     }
     
     .container {
-      padding: 40px 0;
+      padding: 20px 0 40px;
     }
     
     h1 {
       font-family: 'Playfair Display', serif;
       text-align: center;
       color: var(--secondary);
-      font-size: 2.8rem;
-      margin-bottom: 40px;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
       position: relative;
-      padding-bottom: 20px;
+      padding-bottom: 15px;
+      line-height: 1.3;
     }
     
     h1::after {
@@ -51,8 +57,8 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 100px;
-      height: 4px;
+      width: 80px;
+      height: 3px;
       background: linear-gradient(90deg, var(--accent), var(--primary-light));
       border-radius: 2px;
     }
@@ -60,14 +66,15 @@
     ul {
       list-style-type: none;
       padding-left: 0;
+      margin: 0;
     }
     
     .checklist-item {
-      margin: 20px 0;
-      padding: 20px;
+      margin: 15px 0;
+      padding: 15px;
       background: var(--white);
-      border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -75,22 +82,23 @@
     }
     
     .checklist-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
     
     .checklist-item input[type="checkbox"] {
       -webkit-appearance: none;
       appearance: none;
-      margin-right: 15px;
-      width: 22px;
-      height: 22px;
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
       border: 2px solid var(--gray);
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       vertical-align: middle;
       position: relative;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
     
     .checklist-item input[type="checkbox"]:checked {
@@ -102,21 +110,27 @@
       content: '✓';
       position: absolute;
       color: white;
-      font-size: 14px;
+      font-size: 12px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
     
+    .checklist-header {
+      display: flex;
+      align-items: center;
+    }
+    
     .checklist-item .main-label {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--dark);
       cursor: pointer;
-      vertical-align: middle;
       transition: all 0.3s ease;
-      padding-right: 40px;
-      display: inline-block;
+      flex-grow: 1;
+      margin-right: 40px;
+      word-break: break-word;
+      padding: 5px 0;
     }
     
     .checklist-item .main-label.checked {
@@ -126,19 +140,19 @@
     
     .checklist-item .edit-main-label {
       position: absolute;
-      right: 20px;
-      top: 20px;
+      right: 15px;
+      top: 15px;
       background: var(--primary-light);
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 5px 10px;
+      border-radius: 5px;
+      padding: 4px 8px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
     
     .checklist-item .edit-main-label:hover {
@@ -148,18 +162,18 @@
     
     .sub-list {
       display: none;
-      margin-left: 40px;
-      margin-top: 15px;
-      font-size: 1rem;
+      margin-left: 20px;
+      margin-top: 12px;
+      font-size: 0.95rem;
       color: var(--dark);
       background: rgba(248, 249, 250, 0.8);
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
       opacity: 0;
-      transform: translateY(-10px);
+      transform: translateY(-5px);
       transition: all 0.3s ease;
-      border-left: 3px solid var(--primary-light);
+      border-left: 2px solid var(--primary-light);
     }
     
     .sub-list.active {
@@ -174,13 +188,13 @@
     }
     
     .sub-list li {
-      margin: 8px 0;
+      margin: 6px 0;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      padding: 8px 12px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.7);
+      padding: 6px 10px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.9);
     }
     
     .sub-list li:hover {
@@ -190,15 +204,16 @@
     .sub-list input[type="checkbox"] {
       -webkit-appearance: none;
       appearance: none;
-      margin-right: 12px;
-      width: 20px;
-      height: 20px;
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
       border: 2px solid var(--gray);
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
       vertical-align: middle;
       position: relative;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
     
     .sub-list input[type="checkbox"]:checked {
@@ -210,19 +225,19 @@
       content: '✓';
       position: absolute;
       color: white;
-      font-size: 12px;
+      font-size: 10px;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
     
     .sub-list label {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--dark);
       cursor: pointer;
-      vertical-align: middle;
       transition: all 0.3s ease;
       flex-grow: 1;
+      word-break: break-word;
     }
     
     .sub-list .checked label {
@@ -231,14 +246,14 @@
     }
     
     .add-button {
-      margin-top: 15px;
-      padding: 8px 15px;
+      margin-top: 12px;
+      padding: 7px 12px;
       background: var(--primary-light);
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
@@ -252,41 +267,44 @@
     }
     
     .add-main-item-button {
-      margin: 30px auto;
-      padding: 12px 25px;
+      margin: 25px auto;
+      padding: 10px 20px;
       background: var(--primary);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
     }
     
     .add-main-item-button:hover {
       background: var(--secondary);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
     }
     
     .add-input-container {
       display: flex;
-      align-items: center;
-      margin-top: 15px;
-      gap: 10px;
+      flex-direction: column;
+      margin-top: 12px;
+      gap: 8px;
     }
     
     .add-input {
-      padding: 10px 15px;
-      flex-grow: 1;
+      padding: 10px 12px;
+      width: 100%;
       border: 2px solid var(--gray);
-      border-radius: 8px;
-      font-size: 1rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
       transition: all 0.3s ease;
       font-family: 'Montserrat', sans-serif;
     }
@@ -294,61 +312,64 @@
     .add-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
     }
     
     .ok-button {
-      padding: 10px 20px;
+      padding: 8px 16px;
       background: var(--success);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 600;
       transition: all 0.3s ease;
+      width: 100%;
     }
     
     .ok-button:hover {
       background: #3aa8d8;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
     
     .delete-button {
       background: var(--danger);
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 5px 10px;
+      border-radius: 5px;
+      padding: 4px 8px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      margin-left: 8px;
     }
     
     .delete-button:hover {
       background: #d90429;
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
     
     .edit-input-container {
       display: flex;
-      align-items: center;
-      margin-top: 15px;
+      flex-direction: column;
+      margin-top: 12px;
       width: 100%;
-      gap: 10px;
+      gap: 8px;
     }
     
     .edit-input {
-      padding: 10px 15px;
-      flex-grow: 1;
+      padding: 10px 12px;
+      width: 100%;
       border: 2px solid var(--primary-light);
-      border-radius: 8px;
-      font-size: 1.1rem;
+      border-radius: 6px;
+      font-size: 1rem;
       font-family: 'Montserrat', sans-serif;
       transition: all 0.3s ease;
     }
@@ -356,77 +377,83 @@
     .edit-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
     }
     
     .download-button {
       display: block;
-      margin: 40px auto;
-      padding: 12px 30px;
+      margin: 30px auto;
+      padding: 10px 20px;
       background: var(--accent);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
+      box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      width: 100%;
+      max-width: 300px;
     }
     
     .download-button:hover {
       background: #e5177e;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(247, 37, 133, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
     }
     
     .reset-button {
       display: block;
-      margin: 20px auto 40px;
-      padding: 12px 30px;
+      margin: 15px auto 30px;
+      padding: 10px 20px;
       background: var(--warning);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(248, 150, 30, 0.3);
+      box-shadow: 0 4px 10px rgba(248, 150, 30, 0.2);
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      width: 100%;
+      max-width: 300px;
     }
     
     .reset-button:hover {
       background: #e07c0c;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(248, 150, 30, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(248, 150, 30, 0.3);
     }
     
     #image-template {
       position: absolute;
       left: -9999px;
       top: -9999px;
-      width: 800px;
-      padding: 40px;
+      width: calc(100% - 40px);
+      padding: 20px;
       background: white;
       font-family: 'Montserrat', sans-serif;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     
     #image-template h2 {
       text-align: center;
       color: var(--secondary);
-      font-size: 28px;
-      margin-bottom: 30px;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
       font-family: 'Playfair Display', serif;
       position: relative;
-      padding-bottom: 15px;
+      padding-bottom: 10px;
     }
     
     #image-template h2::after {
@@ -435,83 +462,154 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 80px;
-      height: 3px;
+      width: 60px;
+      height: 2px;
       background: linear-gradient(90deg, var(--accent), var(--primary-light));
       border-radius: 2px;
     }
     
     #image-template .list-item {
-      font-size: 18px;
-      margin-bottom: 15px;
+      font-size: 1rem;
+      margin-bottom: 12px;
       color: var(--dark);
       font-weight: 600;
-      padding-left: 10px;
-      border-left: 3px solid var(--primary);
+      padding-left: 8px;
+      border-left: 2px solid var(--primary);
     }
     
     #image-template .sub-item {
-      font-size: 16px;
-      margin-left: 30px;
-      margin-bottom: 10px;
+      font-size: 0.9rem;
+      margin-left: 20px;
+      margin-bottom: 8px;
       color: var(--dark);
       position: relative;
-      padding-left: 15px;
+      padding-left: 12px;
     }
     
     #image-template .sub-item::before {
       content: '';
       position: absolute;
       left: 0;
-      top: 10px;
-      width: 8px;
-      height: 8px;
+      top: 8px;
+      width: 6px;
+      height: 6px;
       background: var(--primary-light);
       border-radius: 50%;
     }
     
     .progress-container {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: #e9ecef;
-      border-radius: 4px;
-      margin-bottom: 30px;
+      border-radius: 3px;
+      margin-bottom: 20px;
       overflow: hidden;
     }
     
     .progress-bar {
       height: 100%;
       background: linear-gradient(90deg, var(--primary-light), var(--accent));
-      border-radius: 4px;
+      border-radius: 3px;
       transition: width 0.5s ease;
     }
     
     .progress-text {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--gray);
-      margin-top: 5px;
+      margin-top: 3px;
     }
     
-    @media (max-width: 768px) {
+    /* Мелкие устройства (телефоны, 600px и меньше) */
+    @media only screen and (max-width: 600px) {
       body {
-        padding: 0 15px;
+        padding: 0 10px;
+      }
+      
+      .container {
+        padding: 15px 0 30px;
       }
       
       h1 {
-        font-size: 2.2rem;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
       }
       
       .checklist-item {
-        padding: 15px;
+        padding: 12px;
+        margin: 12px 0;
       }
       
       .checklist-item .main-label {
-        font-size: 1.1rem;
+        font-size: 1rem;
+        margin-right: 35px;
+      }
+      
+      .checklist-item .edit-main-label {
+        right: 12px;
+        top: 12px;
+        padding: 3px 6px;
+        font-size: 0.75rem;
       }
       
       .sub-list {
-        margin-left: 20px;
+        margin-left: 15px;
+        padding: 10px;
+      }
+      
+      .sub-list li {
+        padding: 5px 8px;
+      }
+      
+      .add-button, .ok-button, .delete-button {
+        font-size: 0.85rem;
+      }
+      
+      .add-main-item-button, .download-button, .reset-button {
+        font-size: 0.95rem;
+        padding: 9px 18px;
+      }
+    }
+    
+    /* Очень маленькие устройства (меньше 400px) */
+    @media only screen and (max-width: 400px) {
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      .checklist-item {
+        padding: 10px;
+      }
+      
+      .checklist-item .main-label {
+        font-size: 0.95rem;
+      }
+      
+      .sub-list label {
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* Ландшафтная ориентация */
+    @media screen and (max-width: 900px) and (orientation: landscape) {
+      .container {
+        padding: 15px 0 25px;
+      }
+      
+      h1 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+      }
+      
+      .checklist-item {
+        margin: 10px 0;
+        padding: 10px;
+      }
+      
+      .sub-list {
+        margin-left: 15px;
+        padding: 8px;
       }
     }
   </style>
@@ -527,127 +625,253 @@
     
     <ul id="main-checklist">
       <li class="checklist-item">
-        <input type="checkbox" id="item1" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Определение цели и аудитории</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item1" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Определение цели и аудитории</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Определите цель выступления (информировать, убедить, вдохновить и т.д.).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Изучите аудиторию: возраст, интересы, уровень знаний по теме.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Сформулируйте ключевой посыл (основная идея, которую хотите донести).</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Определите цель выступления (информировать, убедить, вдохновить и т.д.).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Изучите аудиторию: возраст, интересы, уровень знаний по теме.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сформулируйте ключевой посыл (основная идея, которую хотите донести).</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item2" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Подготовка содержания</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item2" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Подготовка содержания</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Составьте структуру выступления: введение, основная часть, заключение.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подготовьте тезисы или полный текст выступления.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Выберите ключевые факты, примеры, истории или данные для поддержки тезисов.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте, чтобы информация была актуальной и достоверной.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Добавьте элементы вовлечения (вопросы к аудитории, юмор, визуальные образы).</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Составьте структуру выступления: введение, основная часть, заключение.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подготовьте тезисы или полный текст выступления.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Выберите ключевые факты, примеры, истории или данные для поддержки тезисов.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте, чтобы информация была актуальной и достоверной.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Добавьте элементы вовлечения (вопросы к аудитории, юмор, визуальные образы).</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item3" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Создание визуальных материалов</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item3" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Создание визуальных материалов</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подготовьте слайды или другие визуальные материалы (если требуется).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Убедитесь, что слайды минималистичны, читаемы и содержат только ключевую информацию.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте техническую совместимость (шрифты, форматы, проектор).</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подготовьте слайды или другие визуальные материалы (если требуется).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Убедитесь, что слайды минималистичны, читаемы и содержат только ключевую информацию.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте техническую совместимость (шрифты, форматы, проектор).</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item4" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Репетиция</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item4" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Репетиция</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Практикуйте выступление перед зеркалом, друзьями или запишите на видео.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Отрепетируйте тайминг: уложитесь в отведенное время.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте произношение сложных слов и терминов.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Потренируйтесь в управлении голосом: громкость, интонация, паузы.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Отработайте жесты и мимику для усиления речи.</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Практикуйте выступление перед зеркалом, друзьями или запишите на видео.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Отрепетируйте тайминг: уложитесь в отведенное время.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте произношение сложных слов и терминов.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Потренируйтесь в управлении голосом: громкость, интонация, паузы.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Отработайте жесты и мимику для усиления речи.</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item5" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Подготовка к вопросам</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item5" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Подготовка к вопросам</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подумайте о возможных вопросах от аудитории.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подготовьте краткие и четкие ответы на сложные или спорные темы.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Решите, как будете реагировать на неожиданные вопросы (например, "Я уточню этот момент позже").</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подумайте о возможных вопросах от аудитории.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подготовьте краткие и четкие ответы на сложные или спорные темы.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Решите, как будете реагировать на неожиданные вопросы (например, "Я уточню этот момент позже").</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item6" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Техническая подготовка</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item6" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Техническая подготовка</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте оборудование: микрофон, проектор, ноутбук, кликер.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Убедитесь, что у вас есть резервные копии материалов (USB, облако).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте подключение к интернету (если требуется).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Посетите место выступления заранее, чтобы ознакомиться с пространством.</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте оборудование: микрофон, проектор, ноутбук, кликер.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Убедитесь, что у вас есть резервные копии материалов (USB, облако).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте подключение к интернету (если требуется).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Посетите место выступления заранее, чтобы ознакомиться с пространством.</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item7" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Личная подготовка</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item7" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Личная подготовка</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подготовьте подходящую одежду: чистую, удобную, соответствующую событию.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Выспитесь перед выступлением.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Сделайте разминку для голоса и тела (дыхательные упражнения, легкая растяжка).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Подготовьте воду или чай для поддержания голоса во время выступления.</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подготовьте подходящую одежду: чистую, удобную, соответствующую событию.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Выспитесь перед выступлением.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сделайте разминку для голоса и тела (дыхательные упражнения, легкая растяжка).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Подготовьте воду или чай для поддержания голоса во время выступления.</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item8" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">День выступления</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item8" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">День выступления</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Прибудьте на место заранее (за 30–60 минут).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проверьте технику и материалы еще раз.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Познакомьтесь с организаторами и уточните тайминг.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Сделайте несколько глубоких вдохов для снятия волнения.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Прибудьте на место заранее (за 30–60 минут).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте технику и материалы еще раз.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Познакомьтесь с организаторами и уточните тайминг.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сделайте несколько глубоких вдохов для снятия волнения.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
-        <input type="checkbox" id="item9" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">После выступления</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="item9" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">После выступления</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Поблагодарите аудиторию и организаторов.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Соберите обратную связь (вопросы, комментарии, анкеты).</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Проанализируйте свое выступление: что удалось, что можно улучшить.</label></li>
-            <li><input type="checkbox" onchange="toggleChecked(this)"><label>Сохраните материалы для будущих выступлений.</label></li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Поблагодарите аудиторию и организаторов.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Соберите обратную связь (вопросы, комментарии, анкеты).</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проанализируйте свое выступление: что удалось, что можно улучшить.</label>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сохраните материалы для будущих выступлений.</label>
+            </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
@@ -757,7 +981,7 @@
 
     // Остальные функции чек-листа
     function toggleSubList(label) {
-      const subList = label.parentElement.querySelector('.sub-list');
+      const subList = label.closest('.checklist-item').querySelector('.sub-list');
       subList.classList.toggle('active');
       updateProgress();
     }
@@ -812,7 +1036,7 @@
     }
 
     function addNewSubItem(input) {
-      const subListUl = input.parentElement.parentElement.querySelector('ul');
+      const subListUl = input.closest('.sub-list').querySelector('ul');
       const newItemText = input.value.trim();
       
       if (newItemText) {
@@ -858,8 +1082,10 @@
       newItem.className = 'checklist-item';
       
       newItem.innerHTML = `
-        <input type="checkbox" id="${newId}" onchange="toggleChecked(this)">
-        <label class="main-label" onclick="toggleSubList(this)">Новый раздел</label>
+        <div class="checklist-header">
+          <input type="checkbox" id="${newId}" onchange="toggleChecked(this)">
+          <label class="main-label" onclick="toggleSubList(this)">Новый раздел</label>
+        </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
         <div class="sub-list">
           <ul></ul>
@@ -874,7 +1100,7 @@
     }
 
     function editMainItem(button) {
-      const item = button.parentElement;
+      const item = button.closest('.checklist-item');
       const label = item.querySelector('.main-label');
       const currentText = label.textContent;
       
@@ -893,7 +1119,7 @@
         if (input.value.trim()) {
           label.textContent = input.value.trim();
           editContainer.remove();
-          label.style.display = 'inline-block';
+          label.style.display = 'inline';
           button.style.display = 'block';
           saveChecklistState();
         }
@@ -996,9 +1222,22 @@
     }
 
     // Инициализация при загрузке страницы
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
-    };
+      
+      // Оптимизация для мобильных устройств
+      if ('ontouchstart' in window) {
+        // Увеличиваем область клика для чекбоксов
+        document.querySelectorAll('.checklist-item, .sub-list li').forEach(item => {
+          item.style.cursor = 'pointer';
+        });
+        
+        // Улучшаем отзывчивость кнопок
+        document.querySelectorAll('button').forEach(button => {
+          button.style.touchAction = 'manipulation';
+        });
+      }
+    });
   </script>
 </body>
 </html>
