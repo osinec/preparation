@@ -539,6 +539,33 @@
       box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
     }
 
+    #downloadImageBtn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+
+    /* --- Стили для индикатора загрузки --- */
+    .loading {
+      display: none;
+      margin: 20px 0;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
@@ -907,12 +934,17 @@
       <canvas id="modalImageCanvas"></canvas>
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
+      
+      <!-- Индикатор загрузки -->
+      <div class="loading" id="modalLoading">
+        <div class="spinner"></div>
+        <p>Подготовка файла к скачиванию...</p>
+      </div>
     </div>
   </div>
 
   <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script>
     // Функция для обновления прогресса
     function updateProgress() {
@@ -983,12 +1015,18 @@
           const modalImg = document.getElementById('modalImageCanvas');
           const downloadBtn = document.getElementById('downloadImageBtn');
           const span = document.getElementsByClassName("close")[0];
+          const loadingIndicator = document.getElementById('modalLoading');
 
           // Передаем содержимое canvas в модальное окно
           modalImg.width = canvas.width;
           modalImg.height = canvas.height;
           const ctx = modalImg.getContext('2d');
           ctx.drawImage(canvas, 0, 0);
+
+          // Сбрасываем состояние кнопки скачивания
+          downloadBtn.disabled = false;
+          downloadBtn.textContent = "💾 Скачать изображение";
+          loadingIndicator.style.display = 'none';
 
           modal.style.display = "block";
 
@@ -1004,10 +1042,52 @@
             }
           }
 
-          // Функция скачивания изображения из модального окна
+          // --- НОВАЯ ФУНКЦИЯ СКАЧИВАНИЯ ---
           downloadBtn.onclick = function() {
+            // Показываем индикатор загрузки и блокируем кнопку
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = "Подготовка...";
+            loadingIndicator.style.display = 'block';
+
+            // Конвертируем canvas в Blob
             canvas.toBlob(function(blob) {
-              saveAs(blob, 'чек-лист_выступление.jpg');
+                if (!blob) {
+                    console.error('Не удалось создать Blob из canvas');
+                    alert('Произошла ошибка при подготовке файла.');
+                    // Скрываем индикатор и разблокируем кнопку
+                    loadingIndicator.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
+                    return;
+                }
+
+                try {
+                    // Создаем URL для Blob
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'чек-лист_выступление.jpg';
+
+                    // Добавляем элемент в DOM, кликаем и удаляем
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    // Скрываем индикатор загрузки и разблокируем кнопку
+                    loadingIndicator.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
+
+                } catch (error) {
+                    console.error('Ошибка при скачивании:', error);
+                    alert('Произошла ошибка при скачивании файла.');
+                    // Скрываем индикатор и разблокируем кнопку
+                    loadingIndicator.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
+                }
             }, 'image/jpeg', 0.95); // JPEG с качеством 95%
           }
 
