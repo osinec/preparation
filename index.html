@@ -4,54 +4,421 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Чек-лист для подготовки к выступлению</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #4361ee;
-      --primary-light: #4895ef;
-      --secondary: #3f37c9;
-      --accent: #f72585;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --success: #4cc9f0;
-      --warning: #f8961e;
-      --danger: #ef233c;
-      --gray: #adb5bd;
+      --primary: #4a55e1;
+      --primary-light: #6b7aff;
+      --secondary: #3a3f99;
+      --accent: #ff4d8a;
+      --light: #f9fafb;
+      --dark: #1e2126;
+      --success: #38c2e6;
+      --warning: #ff9f43;
+      --danger: #e63946;
+      --gray: #b0b7c3;
       --white: #ffffff;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    
+
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    
+
     body {
       font-family: 'Montserrat', sans-serif;
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 0 15px;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      padding: 0 16px;
+      background: linear-gradient(135deg, #f0f4f8 0%, #e0e6ef 100%);
       min-height: 100vh;
       color: var(--dark);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
       -webkit-text-size-adjust: 100%;
     }
-    
+
     .container {
-      padding: 20px 0 40px;
+      padding: 24px 0 48px;
     }
-    
+
     h1 {
       font-family: 'Playfair Display', serif;
       text-align: center;
       color: var(--secondary);
-      font-size: 1.8rem;
-      margin-bottom: 25px;
+      font-size: 2rem;
+      margin-bottom: 32px;
       position: relative;
-      padding-bottom: 15px;
+      padding-bottom: 16px;
       line-height: 1.3;
+      font-weight: 700;
     }
-    
+
     h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--primary-light));
+      border-radius: 2px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .checklist-item {
+      margin: 16px 0;
+      padding: 20px;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      border-left: 5px solid var(--primary);
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .checklist-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .checklist-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--gray);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .checklist-item input[type="checkbox"]:checked {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .checklist-item input[type="checkbox"]:checked::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      color: var(--white);
+      font-size: 12px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .checklist-item .main-label {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      flex-grow: 1;
+      word-break: break-word;
+      padding: 4px 0;
+      transition: color 0.3s ease;
+    }
+
+    .checklist-item .main-label.checked {
+      color: var(--success);
+      text-decoration: line-through;
+    }
+
+    .checklist-item .edit-main-label {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      background: var(--primary-light);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .checklist-item .edit-main-label:hover {
+      background: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .sub-list {
+      display: none;
+      margin-left: 24px;
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: var(--dark);
+      background: rgba(248, 249, 250, 0.9);
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06);
+      border-left: 3px solid var(--primary-light);
+      transition: all 0.3s ease;
+    }
+
+    .sub-list.active {
+      display: block;
+      animation: slideDown 0.3s ease-in-out;
+    }
+
+    .sub-list li {
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: background 0.3s ease;
+    }
+
+    .sub-list li:hover {
+      background: rgba(74, 85, 225, 0.08);
+    }
+
+    .sub-list input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--gray);
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .sub-list input[type="checkbox"]:checked {
+      background-color: var(--success);
+      border-color: var(--success);
+    }
+
+    .sub-list input[type="checkbox"]:checked::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      color: var(--white);
+      font-size: 10px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .sub-list label {
+      font-size: 0.95rem;
+      color: var(--dark);
+      cursor: pointer;
+      flex-grow: 1;
+      word-break: break-word;
+    }
+
+    .sub-list .checked label {
+      color: var(--success);
+      text-decoration: line-through;
+    }
+
+    .add-button {
+      margin-top: 12px;
+      padding: 8px 14px;
+      background: var(--primary-light);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .add-button:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .add-main-item-button, .download-button, .reset-button {
+      margin: 24px auto;
+      padding: 12px 24px;
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 320px;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-md);
+    }
+
+    .add-main-item-button {
+      background: var(--primary);
+    }
+
+    .add-main-item-button:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(74, 85, 225, 0.2);
+    }
+
+    .download-button {
+      background: var(--accent);
+    }
+
+    .download-button:hover {
+      background: #e6397a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(255, 77, 138, 0.2);
+    }
+
+    .reset-button {
+      background: var(--warning);
+    }
+
+    .reset-button:hover {
+      background: #e68a3a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(255, 159, 67, 0.2);
+    }
+
+    .add-input-container, .edit-input-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 12px;
+      gap: 8px;
+    }
+
+    .add-input, .edit-input {
+      padding: 10px 14px;
+      width: 100%;
+      border: 2px solid var(--gray);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .add-input:focus, .edit-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 85, 225, 0.1);
+    }
+
+    .ok-button {
+      padding: 10px 16px;
+      background: var(--success);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .ok-button:hover {
+      background: #2ea9cc;
+      transform: translateY(-1px);
+    }
+
+    .delete-button {
+      background: var(--danger);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      padding: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin-left: 8px;
+    }
+
+    .delete-button:hover {
+      background: #c72e3a;
+      transform: scale(1.1);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    #image-template {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      width: calc(100% - 40px);
+      padding: 24px;
+      background: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+
+    #image-template h2 {
+      text-align: center;
+      color: var(--secondary);
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      font-family: 'Playfair Display', serif;
+      position: relative;
+      padding-bottom: 12px;
+    }
+
+    #image-template h2::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -62,554 +429,208 @@
       background: linear-gradient(90deg, var(--accent), var(--primary-light));
       border-radius: 2px;
     }
-    
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-      margin: 0;
-    }
-    
-    .checklist-item {
-      margin: 15px 0;
-      padding: 15px;
-      background: var(--white);
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      border-left: 4px solid var(--primary);
-    }
-    
-    .checklist-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .checklist-item input[type="checkbox"] {
-      -webkit-appearance: none;
-      appearance: none;
-      margin-right: 12px;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--gray);
-      border-radius: 5px;
-      cursor: pointer;
-      vertical-align: middle;
-      position: relative;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    
-    .checklist-item input[type="checkbox"]:checked {
-      background-color: var(--success);
-      border-color: var(--success);
-    }
-    
-    .checklist-item input[type="checkbox"]:checked::after {
-      content: '✓';
-      position: absolute;
-      color: white;
-      font-size: 12px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
-    .checklist-header {
-      display: flex;
-      align-items: center;
-    }
-    
-    .checklist-item .main-label {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--dark);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      flex-grow: 1;
-      margin-right: 40px;
-      word-break: break-word;
-      padding: 5px 0;
-    }
-    
-    .checklist-item .main-label.checked {
-      color: var(--success);
-      text-decoration: line-through;
-    }
-    
-    .checklist-item .edit-main-label {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      background: var(--primary-light);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .checklist-item .edit-main-label:hover {
-      background: var(--primary);
-      transform: scale(1.05);
-    }
-    
-    .sub-list {
-      display: none;
-      margin-left: 20px;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      color: var(--dark);
-      background: rgba(248, 249, 250, 0.8);
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
-      opacity: 0;
-      transform: translateY(-5px);
-      transition: all 0.3s ease;
-      border-left: 2px solid var(--primary-light);
-    }
-    
-    .sub-list.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .sub-list ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    
-    .sub-list li {
-      margin: 6px 0;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.9);
-    }
-    
-    .sub-list li:hover {
-      background: rgba(67, 97, 238, 0.1);
-    }
-    
-    .sub-list input[type="checkbox"] {
-      -webkit-appearance: none;
-      appearance: none;
-      margin-right: 10px;
-      width: 18px;
-      height: 18px;
-      border: 2px solid var(--gray);
-      border-radius: 4px;
-      cursor: pointer;
-      vertical-align: middle;
-      position: relative;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    
-    .sub-list input[type="checkbox"]:checked {
-      background-color: var(--success);
-      border-color: var(--success);
-    }
-    
-    .sub-list input[type="checkbox"]:checked::after {
-      content: '✓';
-      position: absolute;
-      color: white;
-      font-size: 10px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
-    .sub-list label {
-      font-size: 0.95rem;
-      color: var(--dark);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      flex-grow: 1;
-      word-break: break-word;
-    }
-    
-    .sub-list .checked label {
-      color: var(--success);
-      text-decoration: line-through;
-    }
-    
-    .add-button {
-      margin-top: 12px;
-      padding: 7px 12px;
-      background: var(--primary-light);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      width: fit-content;
-    }
-    
-    .add-button:hover {
-      background: var(--primary);
-      transform: translateY(-2px);
-    }
-    
-    .add-main-item-button {
-      margin: 25px auto;
-      padding: 10px 20px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      max-width: 300px;
-      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
-    }
-    
-    .add-main-item-button:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-    }
-    
-    .add-input-container {
-      display: flex;
-      flex-direction: column;
-      margin-top: 12px;
-      gap: 8px;
-    }
-    
-    .add-input {
-      padding: 10px 12px;
-      width: 100%;
-      border: 2px solid var(--gray);
-      border-radius: 6px;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      font-family: 'Montserrat', sans-serif;
-    }
-    
-    .add-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-    }
-    
-    .ok-button {
-      padding: 8px 16px;
-      background: var(--success);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-    
-    .ok-button:hover {
-      background: #3aa8d8;
-      transform: translateY(-1px);
-    }
-    
-    .delete-button {
-      background: var(--danger);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-      margin-left: 8px;
-    }
-    
-    .delete-button:hover {
-      background: #d90429;
-      transform: scale(1.05);
-    }
-    
-    .edit-input-container {
-      display: flex;
-      flex-direction: column;
-      margin-top: 12px;
-      width: 100%;
-      gap: 8px;
-    }
-    
-    .edit-input {
-      padding: 10px 12px;
-      width: 100%;
-      border: 2px solid var(--primary-light);
-      border-radius: 6px;
-      font-size: 1rem;
-      font-family: 'Montserrat', sans-serif;
-      transition: all 0.3s ease;
-    }
-    
-    .edit-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
-    }
-    
-    .download-button {
-      display: block;
-      margin: 30px auto;
-      padding: 10px 20px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      max-width: 300px;
-    }
-    
-    .download-button:hover {
-      background: #e5177e;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
-    }
-    
-    .reset-button {
-      display: block;
-      margin: 15px auto 30px;
-      padding: 10px 20px;
-      background: var(--warning);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(248, 150, 30, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      max-width: 300px;
-    }
-    
-    .reset-button:hover {
-      background: #e07c0c;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(248, 150, 30, 0.3);
-    }
-    
-    #image-template {
-      position: absolute;
-      left: -9999px;
-      top: -9999px;
-      width: calc(100% - 40px);
-      padding: 20px;
-      background: white;
-      font-family: 'Montserrat', sans-serif;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    #image-template h2 {
-      text-align: center;
-      color: var(--secondary);
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      font-family: 'Playfair Display', serif;
-      position: relative;
-      padding-bottom: 10px;
-    }
-    
-    #image-template h2::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--primary-light));
-      border-radius: 2px;
-    }
-    
+
     #image-template .list-item {
-      font-size: 1rem;
+      font-size: 1.1rem;
       margin-bottom: 12px;
       color: var(--dark);
       font-weight: 600;
-      padding-left: 8px;
-      border-left: 2px solid var(--primary);
+      padding-left: 10px;
+      border-left: 3px solid var(--primary);
     }
-    
+
     #image-template .sub-item {
-      font-size: 0.9rem;
-      margin-left: 20px;
+      font-size: 0.95rem;
+      margin-left: 24px;
       margin-bottom: 8px;
       color: var(--dark);
       position: relative;
-      padding-left: 12px;
+      padding-left: 16px;
     }
-    
+
     #image-template .sub-item::before {
-      content: '';
+      content: '\f111';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
       position: absolute;
       left: 0;
-      top: 8px;
-      width: 6px;
-      height: 6px;
-      background: var(--primary-light);
-      border-radius: 50%;
+      top: 6px;
+      font-size: 6px;
+      color: var(--primary-light);
     }
-    
-    .progress-container {
-      width: 100%;
-      height: 6px;
-      background: #e9ecef;
-      border-radius: 3px;
-      margin-bottom: 20px;
-      overflow: hidden;
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary-light), var(--accent));
-      border-radius: 3px;
-      transition: width 0.5s ease;
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    
-    .progress-text {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--gray);
-      margin-top: 3px;
-    }
-    
-    /* Мелкие устройства (телефоны, 600px и меньше) */
-    @media only screen and (max-width: 600px) {
-      body {
-        padding: 0 10px;
-      }
-      
-      .container {
-        padding: 15px 0 30px;
-      }
-      
+
+    /* Tablets (600px - 900px) */
+    @media only screen and (max-width: 900px) {
       h1 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
+        font-size: 1.8rem;
+        margin-bottom: 24px;
       }
-      
+
       .checklist-item {
-        padding: 12px;
+        padding: 16px;
         margin: 12px 0;
       }
-      
+
+      .checklist-item .main-label {
+        font-size: 1.1rem;
+      }
+
+      .sub-list {
+        margin-left: 20px;
+        padding: 12px;
+      }
+
+      .add-main-item-button, .download-button, .reset-button {
+        max-width: 280px;
+      }
+    }
+
+    /* Mobile (600px and below) */
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 0 12px;
+      }
+
+      .container {
+        padding: 16px 0 32px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+      }
+
+      .checklist-item {
+        padding: 14px;
+        margin: 10px 0;
+        border-left-width: 4px;
+      }
+
+      .checklist-header {
+        gap: 10px;
+      }
+
+      .checklist-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+      }
+
       .checklist-item .main-label {
         font-size: 1rem;
-        margin-right: 35px;
+        line-height: 1.4;
       }
-      
+
       .checklist-item .edit-main-label {
         right: 12px;
         top: 12px;
-        padding: 3px 6px;
-        font-size: 0.75rem;
+        padding: 4px 8px;
+        font-size: 0.8rem;
       }
-      
+
       .sub-list {
-        margin-left: 15px;
+        margin-left: 16px;
         padding: 10px;
+        font-size: 0.9rem;
       }
-      
+
       .sub-list li {
-        padding: 5px 8px;
+        padding: 6px 10px;
       }
-      
-      .add-button, .ok-button, .delete-button {
-        font-size: 0.85rem;
+
+      .sub-list input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
       }
-      
-      .add-main-item-button, .download-button, .reset-button {
-        font-size: 0.95rem;
-        padding: 9px 18px;
-      }
-    }
-    
-    /* Очень маленькие устройства (меньше 400px) */
-    @media only screen and (max-width: 400px) {
-      h1 {
-        font-size: 1.3rem;
-      }
-      
-      .checklist-item {
-        padding: 10px;
-      }
-      
-      .checklist-item .main-label {
-        font-size: 0.95rem;
-      }
-      
+
       .sub-list label {
         font-size: 0.9rem;
       }
-    }
-    
-    /* Ландшафтная ориентация */
-    @media screen and (max-width: 900px) and (orientation: landscape) {
-      .container {
-        padding: 15px 0 25px;
+
+      .add-button {
+        font-size: 0.85rem;
+        padding: 6px 12px;
       }
-      
+
+      .add-main-item-button, .download-button, .reset-button {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+        max-width: 100%;
+      }
+
+      .add-input, .edit-input {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+      }
+
+      .ok-button {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+      }
+    }
+
+    /* Very small devices (400px and below) */
+    @media only screen and (max-width: 400px) {
       h1 {
         font-size: 1.4rem;
-        margin-bottom: 15px;
+        margin-bottom: 16px;
       }
-      
+
       .checklist-item {
-        margin: 10px 0;
+        padding: 12px;
+        margin: 8px 0;
+      }
+
+      .checklist-item .main-label {
+        font-size: 0.95rem;
+      }
+
+      .sub-list {
+        margin-left: 12px;
+        padding: 8px;
+      }
+
+      .sub-list label {
+        font-size: 0.85rem;
+      }
+
+      .progress-text {
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Landscape orientation */
+    @media screen and (max-width: 900px) and (orientation: landscape) {
+      .container {
+        padding: 16px 0 24px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+      }
+
+      .checklist-item {
+        padding: 12px;
+        margin: 8px 0;
+      }
+
+      .sub-list {
+        margin-left: 16px;
         padding: 10px;
       }
-      
-      .sub-list {
-        margin-left: 15px;
-        padding: 8px;
+
+      .add-main-item-button, .download-button, .reset-button {
+        max-width: 240px;
       }
     }
   </style>
@@ -629,7 +650,7 @@
           <input type="checkbox" id="item1" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Определение цели<br>и аудитории</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -645,7 +666,7 @@
               <label>Сформулируйте ключевой посыл (основная идея, которую хотите донести).</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -653,7 +674,7 @@
           <input type="checkbox" id="item2" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Подготовка содержания</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -677,7 +698,7 @@
               <label>Добавьте элементы вовлечения (вопросы к аудитории, юмор, визуальные образы).</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -685,7 +706,7 @@
           <input type="checkbox" id="item3" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Создание визуальных материалов</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -701,7 +722,7 @@
               <label>Проверьте техническую совместимость (шрифты, форматы, проектор).</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -709,7 +730,7 @@
           <input type="checkbox" id="item4" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Репетиция</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -733,7 +754,7 @@
               <label>Отработайте жесты и мимику для усиления речи.</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -741,7 +762,7 @@
           <input type="checkbox" id="item5" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Подготовка к вопросам</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -757,7 +778,7 @@
               <label>Решите, как будете реагировать на неожиданные вопросы (например, "Я уточню этот момент позже").</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -765,7 +786,7 @@
           <input type="checkbox" id="item6" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Техническая подготовка</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -785,7 +806,7 @@
               <label>Посетите место выступления заранее, чтобы ознакомиться с пространством.</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -793,7 +814,7 @@
           <input type="checkbox" id="item7" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Личная подготовка</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -813,7 +834,7 @@
               <label>Подготовьте воду или чай для поддержания голоса во время выступления.</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -821,7 +842,7 @@
           <input type="checkbox" id="item8" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">День выступления</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -845,7 +866,7 @@
               <label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
       <li class="checklist-item">
@@ -853,7 +874,7 @@
           <input type="checkbox" id="item9" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">После выступления</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul>
             <li>
@@ -873,30 +894,27 @@
               <label>Сохраните материалы для будущих выступлений.</label>
             </li>
           </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       </li>
     </ul>
     
-    <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
-    <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (PNG)</button>
-    <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
+    <button class="add-main-item-button" onclick="addNewMainItem()"><i class="fas fa-plus-circle"></i> Добавить новый раздел</button>
+    <button class="download-button" onclick="downloadChecklistImage()"><i class="fas fa-camera"></i> Скачать чек-лист (PNG)</button>
+    <button class="reset-button" onclick="resetChecklist()"><i class="fas fa-undo-alt"></i> Сбросить все изменения</button>
   </div>
 
-  <!-- Скрытый шаблон для создания изображения -->
   <div id="image-template">
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
 
-  <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfkit/0.12.3/pdfkit.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blob-stream/0.1.3/blob-stream.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
   <script>
-    // Функция для обновления прогресса
     function updateProgress() {
       const totalItems = document.querySelectorAll('.checklist-item input[type="checkbox"], .sub-list input[type="checkbox"]').length;
       const checkedItems = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked, .sub-list input[type="checkbox"]:checked').length;
@@ -905,36 +923,30 @@
       document.getElementById('progressBar').style.width = `${progress}%`;
       document.getElementById('progressText').textContent = `${progress}% завершено`;
       
-      // Изменение цвета прогресс-бара в зависимости от прогресса
       const progressBar = document.getElementById('progressBar');
       if (progress < 30) {
-        progressBar.style.background = 'linear-gradient(90deg, #ef233c, #f72585)';
+        progressBar.style.background = 'linear-gradient(90deg, #e63946, #ff4d8a)';
       } else if (progress < 70) {
-        progressBar.style.background = 'linear-gradient(90deg, #f8961e, #f9c74f)';
+        progressBar.style.background = 'linear-gradient(90deg, #ff9f43, #ffc107)';
       } else {
-        progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
+        progressBar.style.background = 'linear-gradient(90deg, #38c2e6, #6b7aff)';
       }
     }
 
-    // Функция для скачивания изображения списка
     function downloadChecklistImage() {
       try {
-        // Получаем все пункты
         const mainItems = document.querySelectorAll('.checklist-item');
         const imageContent = document.getElementById('image-content');
         imageContent.innerHTML = '';
         
-        // Создаем структуру для изображения
         mainItems.forEach(item => {
           const mainLabel = item.querySelector('.main-label').textContent;
           
-          // Добавляем главный пункт
           const mainItemDiv = document.createElement('div');
           mainItemDiv.className = 'list-item';
           mainItemDiv.textContent = mainLabel;
           imageContent.appendChild(mainItemDiv);
           
-          // Добавляем подпункты
           const subItems = item.querySelectorAll('.sub-list li');
           subItems.forEach(subItem => {
             const subLabel = subItem.querySelector('label').textContent;
@@ -944,11 +956,9 @@
             imageContent.appendChild(subItemDiv);
           });
           
-          // Добавляем отступ между блоками
           imageContent.appendChild(document.createElement('br'));
         });
         
-        // Создаем изображение из шаблона
         const template = document.getElementById('image-template');
         html2canvas(template, {
           scale: 2,
@@ -956,7 +966,6 @@
           logging: false,
           useCORS: true
         }).then(canvas => {
-          // Преобразуем canvas в изображение и скачиваем
           const image = canvas.toDataURL('image/png');
           const link = document.createElement('a');
           link.href = image;
@@ -971,7 +980,6 @@
       }
     }
 
-    // Функция для сброса всех изменений
     function resetChecklist() {
       if (confirm('Вы уверены, что хотите сбросить все изменения? Все ваши отметки и добавленные пункты будут удалены.')) {
         localStorage.removeItem('checklistState');
@@ -979,7 +987,6 @@
       }
     }
 
-    // Остальные функции чек-листа
     function toggleSubList(label) {
       const subList = label.closest('.checklist-item').querySelector('.sub-list');
       subList.classList.toggle('active');
@@ -1052,7 +1059,7 @@
         
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
-        deleteButton.textContent = '×';
+        deleteButton.innerHTML = '<i class="fas fa-times"></i>';
         deleteButton.onclick = function() { removeSubItem(this); };
         
         li.appendChild(checkbox);
@@ -1086,10 +1093,10 @@
           <input type="checkbox" id="${newId}" onchange="toggleChecked(this)">
           <label class="main-label" onclick="toggleSubList(this)">Новый раздел</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <button class="edit-main-label" onclick="editMainItem(this)"><i class="fas fa-pencil-alt"></i> Изменить</button>
         <div class="sub-list">
           <ul></ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+          <button class="add-button" onclick="showAddInput(this)"><i class="fas fa-plus"></i> Добавить пункт</button>
         </div>
       `;
       
@@ -1120,7 +1127,7 @@
           label.textContent = input.value.trim();
           editContainer.remove();
           label.style.display = 'inline';
-          button.style.display = 'block';
+          button.style.display = 'flex';
           saveChecklistState();
         }
       };
@@ -1206,7 +1213,7 @@
             if (subItem.isCustom) {
               const deleteButton = document.createElement('button');
               deleteButton.className = 'delete-button';
-              deleteButton.textContent = '×';
+              deleteButton.innerHTML = '<i class="fas fa-times"></i>';
               deleteButton.onclick = function() { removeSubItem(this); };
               li.appendChild(deleteButton);
             }
@@ -1221,18 +1228,20 @@
       updateProgress();
     }
 
-    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
       
-      // Оптимизация для мобильных устройств
       if ('ontouchstart' in window) {
-        // Увеличиваем область клика для чекбоксов
         document.querySelectorAll('.checklist-item, .sub-list li').forEach(item => {
           item.style.cursor = 'pointer';
+          item.addEventListener('touchstart', function() {
+            this.style.background = 'rgba(74, 85, 225, 0.05)';
+          });
+          item.addEventListener('touchend', function() {
+            this.style.background = '';
+          });
         });
         
-        // Улучшаем отзывчивость кнопок
         document.querySelectorAll('button').forEach(button => {
           button.style.touchAction = 'manipulation';
         });
