@@ -1118,6 +1118,16 @@
       <canvas id="modalImageCanvas"></canvas>
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
+      
+      <!-- Кнопка "Если не скачивается" -->
+      <div id="alternativeDownloadSection" style="display: none; margin-top: 15px;">
+        <p><strong>Если не скачивается:</strong></p>
+        <button id="alternativeDownloadBtn">Показать альтернативные изображения</button>
+      </div>
+
+      <!-- Контейнер для альтернативных изображений -->
+      <div id="alternativeImagesContainer" style="margin-top: 15px; display: none; flex-direction: column; gap: 15px;"></div>
+
       <div class="loading" id="modalLoading">
         <div class="spinner"></div>
         <p>Подготовка файла к скачиванию...</p>
@@ -1125,8 +1135,11 @@
     </div>
   </div>
 
+  <!-- Подключаем html2canvas -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <script>
+    // Функция обновления прогресса
     function updateProgress() {
       const totalItems = document.querySelectorAll('.checklist-item input[type="checkbox"], .sub-list input[type="checkbox"]').length;
       const checkedItems = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked, .sub-list input[type="checkbox"]:checked').length;
@@ -1143,12 +1156,14 @@
       }
     }
 
+    // Переключение подсписка
     function toggleSubList(label) {
       const subList = label.closest('.checklist-item').querySelector('.sub-list');
       subList.classList.toggle('active');
       updateProgress();
     }
 
+    // Отметка чекбокса
     function toggleChecked(checkbox) {
       const item = checkbox.nextElementSibling;
       if (checkbox.checked) {
@@ -1160,6 +1175,7 @@
       updateProgress();
     }
 
+    // Добавление подпункта
     function showAddInput(button) {
       const subList = button.parentElement;
       let inputContainer = subList.querySelector('.add-input-container');
@@ -1411,6 +1427,7 @@
       updateProgress();
     }
 
+    // Функция генерации и показа изображения
     function showChecklistImage() {
       try {
         const mainItems = document.querySelectorAll('.checklist-item');
@@ -1432,8 +1449,10 @@
           });
           imageContent.appendChild(document.createElement('br'));
         });
+
         const template = document.getElementById('image-template');
         template.style.display = 'block';
+
         const targetDPI = 96;
         const scale = window.devicePixelRatio || 1;
         const templateWidthMM = 210;
@@ -1447,6 +1466,7 @@
           width: expectedWidthPx,
           windowWidth: expectedWidthPx
         };
+
         setTimeout(() => {
           html2canvas(template, canvasOptions).then(canvas => {
             template.style.display = 'none';
@@ -1459,24 +1479,31 @@
             modalImg.width = canvas.width;
             modalImg.height = canvas.height;
             ctx.drawImage(canvas, 0, 0);
+
             downloadBtn.disabled = false;
             downloadBtn.textContent = "💾 Скачать изображение";
             modal.style.display = "block";
+
             span.onclick = function() { modal.style.display = "none"; };
             window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } };
+
             downloadBtn.onclick = function() {
               downloadBtn.disabled = true;
               downloadBtn.textContent = "Подготовка...";
               const loadingIndicator = document.getElementById('modalLoading');
               loadingIndicator.style.display = 'block';
+
               canvas.toBlob(function(blob) {
                 if (!blob) {
                   alert('Ошибка при создании изображения.');
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
+                  // Показываем альтернативную кнопку
+                  document.getElementById('alternativeDownloadSection').style.display = 'block';
                   return;
                 }
+
                 try {
                   const url = window.URL.createObjectURL(blob);
                   const a = document.createElement('a');
@@ -1490,25 +1517,72 @@
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
+                  document.getElementById('alternativeDownloadSection').style.display = 'none';
                 } catch (error) {
                   alert('Ошибка при скачивании.');
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
+                  document.getElementById('alternativeDownloadSection').style.display = 'block';
                 }
               }, 'image/jpeg', 0.92);
             };
           }).catch(error => {
             template.style.display = 'none';
             alert('Ошибка при создании изображения.');
+            document.getElementById('alternativeDownloadSection').style.display = 'block';
           });
         }, 100);
       } catch (error) {
         const template = document.getElementById('image-template');
         if (template) template.style.display = 'none';
         alert('Ошибка при подготовке изображения.');
+        document.getElementById('alternativeDownloadSection').style.display = 'block';
       }
     }
+
+    // Кнопка "Если не скачивается"
+    document.getElementById('alternativeDownloadBtn').addEventListener('click', function() {
+      const container = document.getElementById('alternativeImagesContainer');
+      container.innerHTML = '';
+      container.style.display = 'flex';
+
+      const images = [
+        'https://drive.google.com/uc?export=view&id=1_0ZtLHjU5opnOSrOrqYKX7ko07DtCajr',
+        'https://drive.google.com/uc?export=view&id=1_mdFoYziUGAswPA4jrEJke9D7p4_JMsb',
+        'https://drive.google.com/uc?export=view&id=1tYLFxN2oOcXM8qNzHAPTTeppe0IWiyPg'
+      ];
+
+      images.forEach((src, index) => {
+        const imgBox = document.createElement('div');
+        imgBox.style.textAlign = 'center';
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Изображение ${index + 1}`;
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        img.style.borderRadius = '8px';
+        img.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+
+        const link = document.createElement('a');
+        link.href = src;
+        link.download = `чек-лист_альтернатива_${index + 1}.jpg`;
+        link.textContent = 'Скачать изображение';
+        link.style.display = 'inline-block';
+        link.style.marginTop = '10px';
+        link.style.padding = '8px 16px';
+        link.style.backgroundColor = '#4cc9f0';
+        link.style.color = 'white';
+        link.style.borderRadius = '5px';
+        link.style.textDecoration = 'none';
+        link.style.fontSize = '0.9rem';
+
+        imgBox.appendChild(img);
+        imgBox.appendChild(link);
+        container.appendChild(imgBox);
+      });
+    });
 
     function resetChecklist() {
       if (confirm('Сбросить все изменения?')) {
