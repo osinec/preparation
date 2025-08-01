@@ -1,6 +1,3 @@
-Хорошо, вот код вашего сайта с изменённой функцией скачивания, использующей второй предложенный способ (конвертация в Data URL и открытие). Название сайта также изменено.
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -545,6 +542,48 @@
         padding: 8px;
       }
     }
+
+    /* --- Стили для индикатора загрузки --- */
+    .loading {
+      display: none;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto 10px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* --- Стили для ссылки на скачивание --- */
+    .download-link-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+    .download-link {
+        display: inline-block;
+        padding: 12px 20px;
+        background: #4CAF50; /* Зеленый цвет */
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: background 0.3s ease;
+        max-width: 90%;
+        word-break: break-word;
+    }
+    .download-link:hover {
+        background: #45a049;
+    }
   </style>
 </head>
 <body>
@@ -811,6 +850,22 @@
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
     <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (JPG)</button>
     <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
+
+    <!-- Индикатор загрузки -->
+    <div class="loading" id="downloadLoading">
+      <div class="spinner"></div>
+      <p>Подготовка изображения...</p>
+    </div>
+
+    <!-- Контейнер для ссылки на скачивание -->
+    <div class="download-link-container" id="downloadLinkContainer" style="display: none;">
+        <a href="#" class="download-link" id="downloadLink" target="_blank" download="чек-лист_выступление.jpg">
+            👉 Открыть/Сохранить чек-лист (если не началось автоматически)
+        </a>
+        <p style="margin-top: 10px; font-size: 0.9rem; color: var(--gray);">
+            Если автоматическое открытие не сработало, нажмите правой кнопкой мыши на ссылку и выберите "Сохранить ссылку как..." или "Скачать изображение".
+        </p>
+    </div>
   </div>
   <!-- Скрытый шаблон для создания изображения -->
   <div id="image-template">
@@ -837,111 +892,122 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
+
     // --- Обновленная функция для скачивания изображения списка (Способ 2) ---
     function downloadChecklistImage() {
-      try {
-        // Получаем все пункты
-        const mainItems = document.querySelectorAll('.checklist-item');
-        const imageContent = document.getElementById('image-content');
-        imageContent.innerHTML = '';
-        // Создаем структуру для изображения
-        mainItems.forEach(item => {
-          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
-          // Добавляем главный пункт
-          const mainItemDiv = document.createElement('div');
-          mainItemDiv.className = 'list-item';
-          mainItemDiv.textContent = mainLabel;
-          imageContent.appendChild(mainItemDiv);
-          // Добавляем подпункты
-          const subItems = item.querySelectorAll('.sub-list li');
-          subItems.forEach(subItem => {
-            const subLabel = subItem.querySelector('label').textContent;
-            const subItemDiv = document.createElement('div');
-            subItemDiv.className = 'sub-item';
-            subItemDiv.textContent = subLabel;
-            imageContent.appendChild(subItemDiv);
-          });
-          // Добавляем отступ между блоками
-          imageContent.appendChild(document.createElement('br'));
-        });
+        // Скрываем возможные предыдущие элементы
+        document.getElementById('downloadLinkContainer').style.display = 'none';
 
-        // Создаем изображение из шаблона
-        const template = document.getElementById('image-template');
+        // Показываем индикатор загрузки
+        const loadingIndicator = document.getElementById('downloadLoading');
+        loadingIndicator.style.display = 'block';
 
-        // Определяем параметры для html2canvas
-        let canvasOptions = {
-          scale: 2, // По умолчанию высокое качество
-          backgroundColor: '#ffffff',
-          logging: false,
-          useCORS: true,
-          allowTaint: true
-        };
+        try {
+            // Получаем все пункты
+            const mainItems = document.querySelectorAll('.checklist-item');
+            const imageContent = document.getElementById('image-content');
+            imageContent.innerHTML = '';
+            // Создаем структуру для изображения
+            mainItems.forEach(item => {
+                const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
+                // Добавляем главный пункт
+                const mainItemDiv = document.createElement('div');
+                mainItemDiv.className = 'list-item';
+                mainItemDiv.textContent = mainLabel;
+                imageContent.appendChild(mainItemDiv);
+                // Добавляем подпункты
+                const subItems = item.querySelectorAll('.sub-list li');
+                subItems.forEach(subItem => {
+                    const subLabel = subItem.querySelector('label').textContent;
+                    const subItemDiv = document.createElement('div');
+                    subItemDiv.className = 'sub-item';
+                    subItemDiv.textContent = subLabel;
+                    imageContent.appendChild(subItemDiv);
+                });
+                // Добавляем отступ между блоками
+                imageContent.appendChild(document.createElement('br'));
+            });
 
-        // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
-        if (window.innerWidth <= 600) {
-          canvasOptions.scale = 1;
-        }
+            // Создаем изображение из шаблона
+            const template = document.getElementById('image-template');
 
-        html2canvas(template, canvasOptions).then(canvas => {
-          try {
-            // --- Способ 2: Конвертация в Data URL и открытие ---
-            // Конвертируем canvas в Data URL (JPEG с качеством 95%)
-            const dataURL = canvas.toDataURL('image/jpeg', 0.95);
+            // Определяем параметры для html2canvas
+            let canvasOptions = {
+                scale: 2, // По умолчанию высокое качество
+                backgroundColor: '#ffffff',
+                logging: false,
+                useCORS: true,
+                allowTaint: true
+            };
 
-            // Пытаемся открыть Data URL в новом окне/вкладке
-            const newWindow = window.open(dataURL, '_blank');
-
-            if (!newWindow) {
-              // Если window.open заблокирован, информируем пользователя
-              alert('Ваш браузер заблокировал автоматическое открытие изображения. Попробуйте вручную открыть ссылку ниже или нажмите на неё правой кнопкой мыши и выберите "Сохранить изображение как...".');
-              
-              // Создаем временную ссылку на странице
-              const tempLink = document.createElement('a');
-              tempLink.href = dataURL;
-              tempLink.target = '_blank'; // Открыть в новой вкладке на всякий случай
-              tempLink.download = 'чек-лист_выступление.jpg'; // Предлагаемое имя файла
-              tempLink.textContent = '👉 Открыть/Сохранить чек-лист (если не началось автоматически)';
-              tempLink.style.display = 'block';
-              tempLink.style.margin = '20px auto';
-              tempLink.style.padding = '15px';
-              tempLink.style.backgroundColor = '#4CAF50'; // Зелёный цвет для лучшей заметности
-              tempLink.style.color = 'white';
-              tempLink.style.textAlign = 'center';
-              tempLink.style.borderRadius = '8px';
-              tempLink.style.cursor = 'pointer';
-              tempLink.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-              tempLink.style.fontWeight = 'bold';
-              tempLink.style.maxWidth = '350px';
-              
-              // Вставляем ссылку после кнопки скачивания
-              const downloadButton = document.querySelector('.download-button');
-              if (downloadButton) {
-                  downloadButton.parentNode.insertBefore(tempLink, downloadButton.nextSibling);
-              } else {
-                  document.querySelector('.container').appendChild(tempLink);
-              }
-              
-              // Прокручиваем к ссылке
-              tempLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-                // Если новое окно открылось, можно показать сообщение
-                // console.log('Изображение открыто в новом окне');
+            // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
+            if (window.innerWidth <= 600) {
+                canvasOptions.scale = 1;
             }
 
-          } catch (error) {
-            console.error('Ошибка при конвертации или открытии изображения:', error);
-            alert('Произошла ошибка при обработке изображения для открытия.');
-          }
-        }).catch(error => {
-          console.error('Ошибка при генерации изображения:', error);
-          alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
-        });
+            html2canvas(template, canvasOptions).then(canvas => {
+                // Скрываем индикатор загрузки
+                loadingIndicator.style.display = 'none';
 
-      } catch (error) {
-        console.error('Ошибка при подготовке изображения:', error);
-        alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
-      }
+                if (!canvas) {
+                    console.error('Не удалось создать canvas');
+                    alert('Произошла ошибка при создании изображения. Canvas не создан.');
+                    return;
+                }
+
+                try {
+                    // --- Способ 2: Конвертация в Data URL и открытие ---
+                    // Конвертируем canvas в Data URL (JPEG с качеством 95%)
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.95);
+
+                    if (!dataURL || dataURL === 'data:,') {
+                        console.error('Не удалось создать Data URL');
+                        alert('Произошла ошибка при создании изображения. Data URL пуст.');
+                        return;
+                    }
+
+                    // Пытаемся открыть Data URL в новом окне/вкладке
+                    const newWindow = window.open(dataURL, '_blank');
+
+                    if (!newWindow) {
+                        // Если window.open заблокирован, информируем пользователя и показываем ссылку
+                        console.warn('window.open был заблокирован браузером.');
+                        alert('Ваш браузер заблокировал автоматическое открытие изображения. Появится ссылка для ручного скачивания.');
+
+                        // Показываем ссылку на странице
+                        const linkContainer = document.getElementById('downloadLinkContainer');
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = dataURL;
+                        linkContainer.style.display = 'block';
+
+                        // Прокручиваем к ссылке
+                        linkContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        // Если новое окно открылось, можно показать сообщение (опционально)
+                        // console.log('Изображение открыто в новом окне');
+                    }
+
+                } catch (conversionError) {
+                    // Скрываем индикатор загрузки в случае ошибки
+                    loadingIndicator.style.display = 'none';
+                    console.error('Ошибка при конвертации canvas в Data URL:', conversionError);
+                    alert('Произошла ошибка при обработке изображения для открытия/скачивания.');
+                }
+            }).catch(canvasError => {
+                // Скрываем индикатор загрузки в случае ошибки
+                loadingIndicator.style.display = 'none';
+                console.error('Ошибка при генерации изображения с помощью html2canvas:', canvasError);
+                alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+            });
+
+        } catch (error) {
+            // Скрываем индикатор загрузки в случае ошибки
+            loadingIndicator.style.display = 'none';
+            console.error('Ошибка при подготовке изображения:', error);
+            alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
+        }
     }
+
     // Функция для сброса всех изменений
     function resetChecklist() {
       if (confirm('Вы уверены, что хотите сбросить все изменения? Все ваши отметки и добавленные пункты будут удалены.')) {
@@ -1165,4 +1231,3 @@
   </script>
 </body>
 </html>
-```
