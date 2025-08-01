@@ -1118,9 +1118,9 @@
       <canvas id="modalImageCanvas"></canvas>
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
-      
-      <!-- Кнопка "Если не скачивается" -->
-      <div id="alternativeDownloadSection" style="display: none; margin-top: 15px;">
+
+      <!-- Кнопка "Если не скачивается" (всегда видна) -->
+      <div id="alternativeDownloadSection" style="margin-top: 15px;">
         <p><strong>Если не скачивается:</strong></p>
         <button id="alternativeDownloadBtn">Показать альтернативные изображения</button>
       </div>
@@ -1499,8 +1499,6 @@
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
-                  // Показываем альтернативную кнопку
-                  document.getElementById('alternativeDownloadSection').style.display = 'block';
                   return;
                 }
 
@@ -1517,31 +1515,27 @@
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
-                  document.getElementById('alternativeDownloadSection').style.display = 'none';
                 } catch (error) {
                   alert('Ошибка при скачивании.');
                   loadingIndicator.style.display = 'none';
                   downloadBtn.disabled = false;
                   downloadBtn.textContent = "💾 Скачать изображение";
-                  document.getElementById('alternativeDownloadSection').style.display = 'block';
                 }
               }, 'image/jpeg', 0.92);
             };
           }).catch(error => {
             template.style.display = 'none';
             alert('Ошибка при создании изображения.');
-            document.getElementById('alternativeDownloadSection').style.display = 'block';
           });
         }, 100);
       } catch (error) {
         const template = document.getElementById('image-template');
         if (template) template.style.display = 'none';
         alert('Ошибка при подготовке изображения.');
-        document.getElementById('alternativeDownloadSection').style.display = 'block';
       }
     }
 
-    // Кнопка "Если не скачивается"
+    // Кнопка "Если не скачивается" (всегда видна)
     document.getElementById('alternativeDownloadBtn').addEventListener('click', function() {
       const container = document.getElementById('alternativeImagesContainer');
       container.innerHTML = '';
@@ -1591,6 +1585,7 @@
       }
     }
 
+    // Загрузка состояния при запуске
     document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
       if ('ontouchstart' in window) {
