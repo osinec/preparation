@@ -1110,16 +1110,13 @@
     <div id="image-content"></div>
   </div>
 
-  <!-- Модальное окно -->
+  <!-- Модальное окно для изображения чек-листа -->
   <div id="imageModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h3>Ваш чек-лист</h3>
       <canvas id="modalImageCanvas"></canvas>
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
-
-      <!-- Кнопка "Если не скачивается" и лента изображений -->
       <div id="alternativeDownloadSection" style="margin-top: 15px; text-align: center;">
         <button id="alternativeDownloadBtn" style="
           padding: 10px 20px;
@@ -1134,47 +1131,18 @@
           transition: all 0.3s ease;
         ">Если не скачивается</button>
       </div>
-
-      <div id="alternativeImagesContainer" style="
-        margin-top: 15px;
-        display: flex;
-        overflow-x: auto;
-        gap: 15px;
-        padding: 10px 0;
-        scroll-behavior: smooth;
-        scrollbar-width: thin;
-        scrollbar-color: #4cc9f0 #f1f1f1;
-      "></div>
-
-      <style>
-        #alternativeImagesContainer::-webkit-scrollbar {
-          height: 8px;
-        }
-        #alternativeImagesContainer::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 4px;
-        }
-        #alternativeImagesContainer::-webkit-scrollbar-thumb {
-          background: #4cc9f0;
-          border-radius: 4px;
-        }
-        .image-box {
-          flex: 0 0 auto;
-          width: 280px;
-          text-align: center;
-        }
-        .image-box img {
-          width: 100%;
-          height: auto;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-      </style>
-
       <div class="loading" id="modalLoading">
         <div class="spinner"></div>
         <p>Подготовка файла к скачиванию...</p>
       </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для альтернативного изображения -->
+  <div id="fullScreenImageModal" class="modal">
+    <div class="modal-content" style="padding: 0; margin: 0; width: 95%; max-width: none; height: 95vh; border-radius: 0;">
+      <span class="close" style="position: absolute; top: 10px; right: 10px; z-index: 10;">&times;</span>
+      <img id="fullScreenImage" style="width: 100%; height: 100%; object-fit: contain; background: #000;" />
     </div>
   </div>
 
@@ -1569,39 +1537,34 @@
       }
     }
 
-    // Кнопка "Если не скачивается"
+    // Кнопка "Если не скачивается" — открывает полноэкранное изображение
     document.getElementById('alternativeDownloadBtn').addEventListener('click', function() {
-      const container = document.getElementById('alternativeImagesContainer');
-      container.innerHTML = '';
-      container.style.display = 'flex';
+      const modal = document.getElementById('fullScreenImageModal');
+      const img = document.getElementById('fullScreenImage');
+      const span = modal.querySelector('.close');
 
-      const images = [
-        'https://drive.google.com/uc?export=view&id=1_0ZtLHjU5opnOSrOrqYKX7ko07DtCajr',
-        'https://drive.google.com/uc?export=view&id=1_mdFoYziUGAswPA4jrEJke9D7p4_JMsb',
-        'https://drive.google.com/uc?export=view&id=1tYLFxN2oOcXM8qNzHAPTTeppe0IWiyPg'
-      ];
+      // URL первого альтернативного изображения
+      img.src = 'https://drive.google.com/uc?export=view&id=1_0ZtLHjU5opnOSrOrqYKX7ko07DtCajr';
 
-      images.forEach((src, index) => {
-        const imgBox = document.createElement('div');
-        imgBox.className = 'image-box';
-        imgBox.style.flex = '0 0 auto';
-        imgBox.style.width = '280px';
+      // Показать модальное окно
+      modal.style.display = 'block';
 
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `Изображение ${index + 1}`;
-        img.style.maxWidth = '100%';
-        img.style.height = 'auto';
-        img.style.borderRadius = '8px';
-        img.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-        img.onerror = () => {
-          img.src = 'https://via.placeholder.com/280x400?text=Изображение+недоступно';
-          img.style.backgroundColor = '#f0f0f0';
-        };
+      // Закрытие по крестику
+      span.onclick = function() {
+        modal.style.display = 'none';
+      };
 
-        imgBox.appendChild(img);
-        container.appendChild(imgBox);
-      });
+      // Закрытие по клику вне изображения
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      };
+
+      // Обработка ошибки загрузки
+      img.onerror = function() {
+        this.src = 'https://via.placeholder.com/800x600?text=Изображение+недоступно';
+      };
     });
 
     function resetChecklist() {
