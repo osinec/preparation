@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Чек-лист для подготовки к выступлению (Способ 2 - Data URL)</title>
+  <title>Чек-лист для подготовки к выступлению</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -467,6 +467,104 @@
       color: var(--gray);
       margin-top: 3px;
     }
+
+    /* --- Стили для модального окна изображения --- */
+    .modal {
+      display: none; /* Скрыто по умолчанию */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 3% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: var(--danger);
+    }
+
+    #modalImageCanvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+    }
+
+    #downloadImageBtn {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
+      margin-top: 10px;
+    }
+
+    #downloadImageBtn:hover {
+      background: #e5177e;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
+    }
+
+    #downloadImageBtn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* --- Стили для индикатора загрузки --- */
+    .loading {
+      display: none;
+      margin: 20px 0;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--accent);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
@@ -508,6 +606,18 @@
         font-size: 0.95rem;
         padding: 9px 18px;
       }
+
+      /* Адаптация модального окна для мобильных */
+      .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 15px;
+      }
+      .close {
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+      }
     }
     /* Очень маленькие устройства (меньше 400px) */
     @media only screen and (max-width: 400px) {
@@ -542,53 +652,11 @@
         padding: 8px;
       }
     }
-
-    /* --- Стили для индикатора загрузки --- */
-    .loading {
-      display: none;
-      margin: 20px 0;
-      text-align: center;
-    }
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid var(--accent);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 2s linear infinite;
-      margin: 0 auto 10px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* --- Стили для ссылки на скачивание --- */
-    .download-link-container {
-        text-align: center;
-        margin: 20px 0;
-    }
-    .download-link {
-        display: inline-block;
-        padding: 12px 20px;
-        background: #4CAF50; /* Зеленый цвет */
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: bold;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        transition: background 0.3s ease;
-        max-width: 90%;
-        word-break: break-word;
-    }
-    .download-link:hover {
-        background: #45a049;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Чек-лист для подготовки к выступлению (Способ 2 - Data URL)</h1>
+    <h1>Чек-лист для подготовки к выступлению</h1>
     <div class="progress-container">
       <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -848,30 +916,32 @@
       </li>
     </ul>
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
-    <button class="download-button" onclick="downloadChecklistImage()">📷 Скачать чек-лист (JPG)</button>
+    <button class="download-button" onclick="showChecklistImage()">📷 Показать и скачать чек-лист (JPG)</button>
     <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
-
-    <!-- Индикатор загрузки -->
-    <div class="loading" id="downloadLoading">
-      <div class="spinner"></div>
-      <p>Подготовка изображения...</p>
-    </div>
-
-    <!-- Контейнер для ссылки на скачивание -->
-    <div class="download-link-container" id="downloadLinkContainer" style="display: none;">
-        <a href="#" class="download-link" id="downloadLink" target="_blank" download="чек-лист_выступление.jpg">
-            👉 Открыть/Сохранить чек-лист (если не началось автоматически)
-        </a>
-        <p style="margin-top: 10px; font-size: 0.9rem; color: var(--gray);">
-            Если автоматическое открытие не сработало, нажмите правой кнопкой мыши на ссылку и выберите "Сохранить ссылку как..." или "Скачать изображение".
-        </p>
-    </div>
   </div>
   <!-- Скрытый шаблон для создания изображения -->
   <div id="image-template">
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
+
+  <!-- Модальное окно для отображения изображения -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Ваш чек-лист</h3>
+      <canvas id="modalImageCanvas"></canvas>
+      <br>
+      <button id="downloadImageBtn">💾 Скачать изображение</button>
+      
+      <!-- Индикатор загрузки -->
+      <div class="loading" id="modalLoading">
+        <div class="spinner"></div>
+        <p>Подготовка файла к скачиванию...</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
@@ -893,119 +963,142 @@
       }
     }
 
-    // --- Обновленная функция для скачивания изображения списка (Способ 2) ---
-    function downloadChecklistImage() {
-        // Скрываем возможные предыдущие элементы
-        document.getElementById('downloadLinkContainer').style.display = 'none';
+    // --- ФУНКЦИЯ: Показать изображение в модальном окне ---
+    function showChecklistImage() {
+      try {
+        // Получаем все пункты
+        const mainItems = document.querySelectorAll('.checklist-item');
+        const imageContent = document.getElementById('image-content');
+        imageContent.innerHTML = '';
+        // Создаем структуру для изображения
+        mainItems.forEach(item => {
+          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
+          // Добавляем главный пункт
+          const mainItemDiv = document.createElement('div');
+          mainItemDiv.className = 'list-item';
+          mainItemDiv.textContent = mainLabel;
+          imageContent.appendChild(mainItemDiv);
+          // Добавляем подпункты
+          const subItems = item.querySelectorAll('.sub-list li');
+          subItems.forEach(subItem => {
+            const subLabel = subItem.querySelector('label').textContent;
+            const subItemDiv = document.createElement('div');
+            subItemDiv.className = 'sub-item';
+            subItemDiv.textContent = subLabel;
+            imageContent.appendChild(subItemDiv);
+          });
+          // Добавляем отступ между блоками
+          imageContent.appendChild(document.createElement('br'));
+        });
 
-        // Показываем индикатор загрузки
-        const loadingIndicator = document.getElementById('downloadLoading');
-        loadingIndicator.style.display = 'block';
+        // Создаем изображение из шаблона
+        const template = document.getElementById('image-template');
 
-        try {
-            // Получаем все пункты
-            const mainItems = document.querySelectorAll('.checklist-item');
-            const imageContent = document.getElementById('image-content');
-            imageContent.innerHTML = '';
-            // Создаем структуру для изображения
-            mainItems.forEach(item => {
-                const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
-                // Добавляем главный пункт
-                const mainItemDiv = document.createElement('div');
-                mainItemDiv.className = 'list-item';
-                mainItemDiv.textContent = mainLabel;
-                imageContent.appendChild(mainItemDiv);
-                // Добавляем подпункты
-                const subItems = item.querySelectorAll('.sub-list li');
-                subItems.forEach(subItem => {
-                    const subLabel = subItem.querySelector('label').textContent;
-                    const subItemDiv = document.createElement('div');
-                    subItemDiv.className = 'sub-item';
-                    subItemDiv.textContent = subLabel;
-                    imageContent.appendChild(subItemDiv);
-                });
-                // Добавляем отступ между блоками
-                imageContent.appendChild(document.createElement('br'));
-            });
+        // Определяем параметры для html2canvas
+        let canvasOptions = {
+          scale: 2, // По умолчанию высокое качество
+          backgroundColor: '#ffffff',
+          logging: false,
+          useCORS: true,
+          allowTaint: true
+        };
 
-            // Создаем изображение из шаблона
-            const template = document.getElementById('image-template');
+        // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
+        if (window.innerWidth <= 600) {
+          canvasOptions.scale = 1;
+        }
 
-            // Определяем параметры для html2canvas
-            let canvasOptions = {
-                scale: 2, // По умолчанию высокое качество
-                backgroundColor: '#ffffff',
-                logging: false,
-                useCORS: true,
-                allowTaint: true
-            };
+        html2canvas(template, canvasOptions).then(canvas => {
+          // Отображаем модальное окно
+          const modal = document.getElementById('imageModal');
+          const modalImg = document.getElementById('modalImageCanvas');
+          const downloadBtn = document.getElementById('downloadImageBtn');
+          const span = document.getElementsByClassName("close")[0];
+          const loadingIndicator = document.getElementById('modalLoading');
 
-            // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
-            if (window.innerWidth <= 600) {
-                canvasOptions.scale = 1;
+          // Передаем содержимое canvas в модальное окно
+          modalImg.width = canvas.width;
+          modalImg.height = canvas.height;
+          const ctx = modalImg.getContext('2d');
+          ctx.drawImage(canvas, 0, 0);
+
+          // Сбрасываем состояние кнопки скачивания
+          downloadBtn.disabled = false;
+          downloadBtn.textContent = "💾 Скачать изображение";
+          loadingIndicator.style.display = 'none';
+
+          modal.style.display = "block";
+
+          // Функция закрытия модального окна
+          span.onclick = function() {
+            modal.style.display = "none";
+          }
+
+          // Закрытие при клике вне изображения
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
             }
+          }
 
-            html2canvas(template, canvasOptions).then(canvas => {
-                // Скрываем индикатор загрузки
-                loadingIndicator.style.display = 'none';
+          // --- ФУНКЦИЯ СКАЧИВАНИЯ ---
+          downloadBtn.onclick = function() {
+            // Показываем индикатор загрузки и блокируем кнопку
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = "Подготовка...";
+            loadingIndicator.style.display = 'block';
 
-                if (!canvas) {
-                    console.error('Не удалось создать canvas');
-                    alert('Произошла ошибка при создании изображения. Canvas не создан.');
+            // Конвертируем canvas в Blob
+            canvas.toBlob(function(blob) {
+                if (!blob) {
+                    console.error('Не удалось создать Blob из canvas');
+                    alert('Произошла ошибка при подготовке файла.');
+                    // Скрываем индикатор и разблокируем кнопку
+                    loadingIndicator.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
                     return;
                 }
 
                 try {
-                    // --- Способ 2: Конвертация в Data URL и открытие ---
-                    // Конвертируем canvas в Data URL (JPEG с качеством 95%)
-                    const dataURL = canvas.toDataURL('image/jpeg', 0.95);
+                    // Создаем URL для Blob
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'чек-лист_выступление.jpg';
 
-                    if (!dataURL || dataURL === 'data:,') {
-                        console.error('Не удалось создать Data URL');
-                        alert('Произошла ошибка при создании изображения. Data URL пуст.');
-                        return;
-                    }
+                    // Добавляем элемент в DOM, кликаем и удаляем
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
 
-                    // Пытаемся открыть Data URL в новом окне/вкладке
-                    const newWindow = window.open(dataURL, '_blank');
-
-                    if (!newWindow) {
-                        // Если window.open заблокирован, информируем пользователя и показываем ссылку
-                        console.warn('window.open был заблокирован браузером.');
-                        alert('Ваш браузер заблокировал автоматическое открытие изображения. Появится ссылка для ручного скачивания.');
-
-                        // Показываем ссылку на странице
-                        const linkContainer = document.getElementById('downloadLinkContainer');
-                        const downloadLink = document.getElementById('downloadLink');
-                        downloadLink.href = dataURL;
-                        linkContainer.style.display = 'block';
-
-                        // Прокручиваем к ссылке
-                        linkContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else {
-                        // Если новое окно открылось, можно показать сообщение (опционально)
-                        // console.log('Изображение открыто в новом окне');
-                    }
-
-                } catch (conversionError) {
-                    // Скрываем индикатор загрузки в случае ошибки
+                    // Скрываем индикатор загрузки и разблокируем кнопку
                     loadingIndicator.style.display = 'none';
-                    console.error('Ошибка при конвертации canvas в Data URL:', conversionError);
-                    alert('Произошла ошибка при обработке изображения для открытия/скачивания.');
-                }
-            }).catch(canvasError => {
-                // Скрываем индикатор загрузки в случае ошибки
-                loadingIndicator.style.display = 'none';
-                console.error('Ошибка при генерации изображения с помощью html2canvas:', canvasError);
-                alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
-            });
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
 
-        } catch (error) {
-            // Скрываем индикатор загрузки в случае ошибки
-            loadingIndicator.style.display = 'none';
-            console.error('Ошибка при подготовке изображения:', error);
-            alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
-        }
+                } catch (error) {
+                    console.error('Ошибка при скачивании:', error);
+                    alert('Произошла ошибка при скачивании файла.');
+                    // Скрываем индикатор и разблокируем кнопку
+                    loadingIndicator.style.display = 'none';
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = "💾 Скачать изображение";
+                }
+            }, 'image/jpeg', 0.95); // JPEG с качеством 95%
+          }
+
+        }).catch(error => {
+          console.error('Ошибка при генерации изображения:', error);
+          alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+        });
+
+      } catch (error) {
+        console.error('Ошибка при подготовке изображения:', error);
+        alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
+      }
     }
 
     // Функция для сброса всех изменений
