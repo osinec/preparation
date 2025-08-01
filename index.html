@@ -394,7 +394,8 @@
       position: absolute;
       left: -9999px;
       top: -9999px;
-      width: calc(100% - 40px);
+      /* Ширина A4 при 96 DPI примерно 794px (210мм * 96 / 25.4) */
+      width: 794px;
       padding: 20px;
       background: white;
       font-family: 'Montserrat', sans-serif;
@@ -467,7 +468,6 @@
       color: var(--gray);
       margin-top: 3px;
     }
-
     /* --- Стили для модального окна изображения --- */
     .modal {
       display: none; /* Скрыто по умолчанию */
@@ -481,7 +481,6 @@
       background-color: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(5px);
     }
-
     .modal-content {
       background-color: #fefefe;
       margin: 3% auto;
@@ -494,7 +493,6 @@
       position: relative;
       text-align: center;
     }
-
     .close {
       color: #aaa;
       position: absolute;
@@ -505,20 +503,20 @@
       cursor: pointer;
       transition: color 0.3s ease;
     }
-
     .close:hover,
     .close:focus {
       color: var(--danger);
     }
-
     #modalImageCanvas {
       max-width: 100%;
       height: auto;
       border-radius: 5px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       margin-bottom: 15px;
+      /* Убедимся, что canvas может масштабироваться */
+      width: 100%;
+      height: auto;
     }
-
     #downloadImageBtn {
       padding: 10px 20px;
       background: var(--accent);
@@ -532,20 +530,17 @@
       box-shadow: 0 4px 10px rgba(247, 37, 133, 0.2);
       margin-top: 10px;
     }
-
     #downloadImageBtn:hover {
       background: #e5177e;
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(247, 37, 133, 0.3);
     }
-
     #downloadImageBtn:disabled {
       background-color: #cccccc;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
-
     /* --- Стили для индикатора загрузки --- */
     .loading {
       display: none;
@@ -564,7 +559,6 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
     /* Мелкие устройства (телефоны, 600px и меньше) */
     @media only screen and (max-width: 600px) {
       body {
@@ -606,7 +600,6 @@
         font-size: 0.95rem;
         padding: 9px 18px;
       }
-
       /* Адаптация модального окна для мобильных */
       .modal-content {
         width: 95%;
@@ -924,7 +917,6 @@
     <h2>Чек-лист для подготовки к выступлению</h2>
     <div id="image-content"></div>
   </div>
-
   <!-- Модальное окно для отображения изображения -->
   <div id="imageModal" class="modal">
     <div class="modal-content">
@@ -933,7 +925,6 @@
       <canvas id="modalImageCanvas"></canvas>
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
-      
       <!-- Индикатор загрузки -->
       <div class="loading" id="modalLoading">
         <div class="spinner"></div>
@@ -941,7 +932,6 @@
       </div>
     </div>
   </div>
-
   <!-- Подключаем необходимые библиотеки -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
@@ -962,7 +952,6 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-
     // --- ФУНКЦИЯ: Показать изображение в модальном окне ---
     function showChecklistImage() {
       try {
@@ -972,7 +961,7 @@
         imageContent.innerHTML = '';
         // Создаем структуру для изображения
         mainItems.forEach(item => {
-          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, '\n');
+          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, ' ');
           // Добавляем главный пункт
           const mainItemDiv = document.createElement('div');
           mainItemDiv.className = 'list-item';
@@ -990,112 +979,117 @@
           // Добавляем отступ между блоками
           imageContent.appendChild(document.createElement('br'));
         });
-
         // Создаем изображение из шаблона
         const template = document.getElementById('image-template');
-
+        // Принудительно перерисовываем шаблон
+        template.style.display = 'block';
         // Определяем параметры для html2canvas
+        // Используем devicePixelRatio для более точного масштабирования
+        const targetDPI = 96; // Стандартный DPI для экрана
+        const scale = window.devicePixelRatio || 1;
+        // Учитываем фиксированную ширину шаблона
+        const templateWidthMM = 210; // Ширина A4 в мм
+        const expectedWidthPx = (templateWidthMM / 25.4) * targetDPI; // Ожидаемая ширина в пикселях
+
         let canvasOptions = {
-          scale: 2, // По умолчанию высокое качество
+          scale: scale, // Используем devicePixelRatio для лучшего качества
           backgroundColor: '#ffffff',
           logging: false,
           useCORS: true,
-          allowTaint: true
+          allowTaint: true,
+          width: expectedWidthPx, // Указываем целевую ширину
+          windowWidth: expectedWidthPx // Указываем ширину окна рендеринга
         };
 
-        // Для мобильных устройств уменьшаем масштаб для предотвращения ошибок памяти
-        if (window.innerWidth <= 600) {
-          canvasOptions.scale = 1;
-        }
-
-        html2canvas(template, canvasOptions).then(canvas => {
-          // Отображаем модальное окно
-          const modal = document.getElementById('imageModal');
-          const modalImg = document.getElementById('modalImageCanvas');
-          const downloadBtn = document.getElementById('downloadImageBtn');
-          const span = document.getElementsByClassName("close")[0];
-          const loadingIndicator = document.getElementById('modalLoading');
-
-          // Передаем содержимое canvas в модальное окно
-          modalImg.width = canvas.width;
-          modalImg.height = canvas.height;
-          const ctx = modalImg.getContext('2d');
-          ctx.drawImage(canvas, 0, 0);
-
-          // Сбрасываем состояние кнопки скачивания
-          downloadBtn.disabled = false;
-          downloadBtn.textContent = "💾 Скачать изображение";
-          loadingIndicator.style.display = 'none';
-
-          modal.style.display = "block";
-
-          // Функция закрытия модального окна
-          span.onclick = function() {
-            modal.style.display = "none";
-          }
-
-          // Закрытие при клике вне изображения
-          window.onclick = function(event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
-            }
-          }
-
-          // --- ФУНКЦИЯ СКАЧИВАНИЯ ---
-          downloadBtn.onclick = function() {
-            // Показываем индикатор загрузки и блокируем кнопку
-            downloadBtn.disabled = true;
-            downloadBtn.textContent = "Подготовка...";
-            loadingIndicator.style.display = 'block';
-
-            // Конвертируем canvas в Blob
-            canvas.toBlob(function(blob) {
-                if (!blob) {
-                    console.error('Не удалось создать Blob из canvas');
-                    alert('Произошла ошибка при подготовке файла.');
-                    // Скрываем индикатор и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-                    return;
+        // Небольшая задержка для уверенности в рендере
+        setTimeout(() => {
+            html2canvas(template, canvasOptions).then(canvas => {
+              // Скрываем шаблон обратно
+              template.style.display = 'none';
+              // Отображаем модальное окно
+              const modal = document.getElementById('imageModal');
+              const modalImg = document.getElementById('modalImageCanvas');
+              const downloadBtn = document.getElementById('downloadImageBtn');
+              const span = document.getElementsByClassName("close")[0];
+              const loadingIndicator = document.getElementById('modalLoading');
+              // Передаем содержимое canvas в модальное окно
+              // ВАЖНО: Не устанавливаем width/height напрямую, пусть canvas сам масштабируется через CSS
+              const ctx = modalImg.getContext('2d');
+              // Очищаем canvas перед рисованием нового изображения
+              ctx.clearRect(0, 0, modalImg.width, modalImg.height);
+              // Устанавливаем размеры canvas точно под изображение из html2canvas
+              modalImg.width = canvas.width;
+              modalImg.height = canvas.height;
+              ctx.drawImage(canvas, 0, 0);
+              // Сбрасываем состояние кнопки скачивания
+              downloadBtn.disabled = false;
+              downloadBtn.textContent = "💾 Скачать изображение";
+              loadingIndicator.style.display = 'none';
+              modal.style.display = "block";
+              // Функция закрытия модального окна
+              span.onclick = function() {
+                modal.style.display = "none";
+              }
+              // Закрытие при клике вне изображения
+              window.onclick = function(event) {
+                if (event.target == modal) {
+                  modal.style.display = "none";
                 }
-
-                try {
-                    // Создаем URL для Blob
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = 'чек-лист_выступление.jpg';
-
-                    // Добавляем элемент в DOM, кликаем и удаляем
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-
-                    // Скрываем индикатор загрузки и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-
-                } catch (error) {
-                    console.error('Ошибка при скачивании:', error);
-                    alert('Произошла ошибка при скачивании файла.');
-                    // Скрываем индикатор и разблокируем кнопку
-                    loadingIndicator.style.display = 'none';
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = "💾 Скачать изображение";
-                }
-            }, 'image/jpeg', 0.95); // JPEG с качеством 95%
-          }
-
-        }).catch(error => {
-          console.error('Ошибка при генерации изображения:', error);
-          alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
-        });
+              }
+              // --- ФУНКЦИЯ СКАЧИВАНИЯ ---
+              downloadBtn.onclick = function() {
+                // Показываем индикатор загрузки и блокируем кнопку
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = "Подготовка...";
+                loadingIndicator.style.display = 'block';
+                // Конвертируем canvas в Blob
+                canvas.toBlob(function(blob) {
+                    if (!blob) {
+                        console.error('Не удалось создать Blob из canvas');
+                        alert('Произошла ошибка при подготовке файла.');
+                        // Скрываем индикатор и разблокируем кнопку
+                        loadingIndicator.style.display = 'none';
+                        downloadBtn.disabled = false;
+                        downloadBtn.textContent = "💾 Скачать изображение";
+                        return;
+                    }
+                    try {
+                        // Создаем URL для Blob
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'чек-лист_выступление_A4.jpg';
+                        // Добавляем элемент в DOM, кликаем и удаляем
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                        // Скрываем индикатор загрузки и разблокируем кнопку
+                        loadingIndicator.style.display = 'none';
+                        downloadBtn.disabled = false;
+                        downloadBtn.textContent = "💾 Скачать изображение";
+                    } catch (error) {
+                        console.error('Ошибка при скачивании:', error);
+                        alert('Произошла ошибка при скачивании файла.');
+                        // Скрываем индикатор и разблокируем кнопку
+                        loadingIndicator.style.display = 'none';
+                        downloadBtn.disabled = false;
+                        downloadBtn.textContent = "💾 Скачать изображение";
+                    }
+                }, 'image/jpeg', 0.92); // JPEG с качеством 92%
+              }
+            }).catch(error => {
+              template.style.display = 'none'; // Убедиться, что шаблон скрыт
+              console.error('Ошибка при генерации изображения:', error);
+              alert('Произошла ошибка при создании изображения. Пожалуйста, попробуйте еще раз.');
+            });
+        }, 100); // Задержка 100мс
 
       } catch (error) {
+        // Скрываем шаблон в случае ошибки
+        const template = document.getElementById('image-template');
+        if (template) template.style.display = 'none';
         console.error('Ошибка при подготовке изображения:', error);
         alert('Произошла ошибка при подготовке изображения. Пожалуйста, попробуйте еще раз.');
       }
