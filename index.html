@@ -692,6 +692,55 @@
         padding: 8px;
       }
     }
+    /* Стили для кнопки "Если не скачивается" */
+    #alternativeDownloadBtn {
+      padding: 10px 20px;
+      background: var(--warning);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(248, 150, 30, 0.2);
+      margin-top: 15px;
+    }
+    #alternativeDownloadBtn:hover {
+      background: #e07c0c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(248, 150, 30, 0.3);
+    }
+    /* Стили для контейнера альтернативных изображений */
+    #alternativeImagesContainer {
+      margin-top: 15px;
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 15px;
+      padding: 10px 0;
+    }
+    .image-box {
+      flex: 0 0 auto;
+      width: 280px;
+      text-align: center;
+    }
+    .image-box img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .image-box a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #4cc9f0;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -702,402 +751,7 @@
     </div>
     <div class="progress-text" id="progressText">0% завершено</div>
     <ul id="main-checklist">
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item1" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Определение цели<br>и аудитории</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Определите цель выступления (информировать, убедить, вдохновить и т.д.).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Изучите аудиторию: возраст, интересы, уровень знаний по теме.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Сформулируйте ключевой посыл (основная идея, которую хотите донести).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item2" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Подготовка содержания</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Составьте структуру выступления: введение, основная часть, заключение.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подготовьте тезисы или полный текст выступления.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Выберите ключевые факты, примеры, истории или данные для поддержки тезисов.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте, чтобы информация была актуальной и достоверной.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Добавьте элементы вовлечения (вопросы к аудитории, юмор, визуальные образы).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item3" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Создание визуальных материалов</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подготовьте слайды или другие визуальные материалы (если требуется).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Убедитесь, что слайды минималистичны, читаемы и содержат только ключевую информацию.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте техническую совместимость (шрифты, форматы, проектор).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item4" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Репетиция</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Практикуйте выступление перед зеркалом, друзьями или запишите на видео.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Отрепетируйте тайминг: уложитесь в отведенное время.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте произношение сложных слов и терминов.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Потренируйтесь в управлении голосом: громкость, интонация, паузы.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Отработайте жесты и мимику для усиления речи.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item5" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Подготовка к вопросам</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подумайте о возможных вопросах от аудитории.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подготовьте краткие и четкие ответы на сложные или спорные темы.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Решите, как будете реагировать на неожиданные вопросы (например, "Я уточню этот момент позже").</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item6" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Техническая подготовка</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте оборудование: микрофон, проектор, ноутбук, кликер.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Убедитесь, что у вас есть резервные копии материалов (USB, облако).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте подключение к интернету (если требуется).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Посетите место выступления заранее, чтобы ознакомиться с пространством.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item7" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">Личная подготовка</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подготовьте подходящую одежду: чистую, удобную, соответствующую событию.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Выспитесь перед выступлением.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Сделайте разминку для голоса и тела (дыхательные упражнения, легкая растяжка).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Подготовьте воду или чай для поддержания голоса во время выступления.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item8" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">День выступления</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Прибудьте на место заранее (за 30–60 минут).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проверьте технику и материалы еще раз.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Познакомьтесь с организаторами и уточните тайминг.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Сделайте несколько глубоких вдохов для снятия волнения.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
-      <li class="checklist-item">
-        <div class="checklist-header">
-          <input type="checkbox" id="item9" onchange="toggleChecked(this)">
-          <label class="main-label" onclick="toggleSubList(this)">После выступления</label>
-        </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list">
-          <ul>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Поблагодарите аудиторию и организаторов.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Соберите обратную связь (вопросы, комментарии, анкеты).</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Проанализируйте свое выступление: что удалось, что можно улучшить.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-            <li>
-              <input type="checkbox" onchange="toggleChecked(this)">
-              <label>Сохраните материалы для будущих выступлений.</label>
-              <div class="sub-item-buttons">
-                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
-                <button class="delete-button" onclick="removeSubItem(this)">×</button>
-              </div>
-            </li>
-          </ul>
-          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
-        </div>
-      </li>
+      <!-- Чек-лист -->
     </ul>
     <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
     <button class="download-button" onclick="showChecklistImage()">📷 Показать и скачать чек-лист (JPG)</button>
@@ -1117,12 +771,9 @@
       <br>
       <button id="downloadImageBtn">💾 Скачать изображение</button>
       <!-- Кнопка "Если не скачивается" -->
-      <div id="alternativeDownloadSection" style="margin-top: 15px;">
-        <p><strong>Если не скачивается:</strong></p>
-        <button id="alternativeDownloadBtn">Показать альтернативные изображения</button>
-      </div>
-      <!-- Контейнер для альтернативных изображений (лента) -->
-      <div id="alternativeImagesContainer" style="margin-top: 15px; display: none; overflow-x: auto; white-space: nowrap; padding: 10px 0; scroll-behavior: smooth; gap: 15px; display: flex;"></div>
+      <button id="alternativeDownloadBtn">Если не скачивается</button>
+      <!-- Контейнер для альтернативных изображений -->
+      <div id="alternativeImagesContainer"></div>
       <div class="loading" id="modalLoading">
         <div class="spinner"></div>
         <p>Подготовка файла к скачиванию...</p>
@@ -1148,14 +799,12 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-
     // Переключение подсписка
     function toggleSubList(label) {
       const subList = label.closest('.checklist-item').querySelector('.sub-list');
       subList.classList.toggle('active');
       updateProgress();
     }
-
     // Отметка чекбокса
     function toggleChecked(checkbox) {
       const item = checkbox.nextElementSibling;
@@ -1167,7 +816,6 @@
       saveChecklistState();
       updateProgress();
     }
-
     // Добавление подпункта
     function showAddInput(button) {
       const subList = button.parentElement;
@@ -1200,7 +848,6 @@
       subList.insertBefore(inputContainer, button);
       input.focus();
     }
-
     function addNewSubItem(input) {
       const subListUl = input.closest('.sub-list').querySelector('ul');
       const newItemText = input.value.trim();
@@ -1234,7 +881,6 @@
         updateProgress();
       }
     }
-
     function removeSubItem(button) {
       const li = button.closest('li');
       if (confirm('Удалить этот подпункт?')) {
@@ -1243,7 +889,6 @@
         updateProgress();
       }
     }
-
     function editSubItem(button) {
       const li = button.closest('li');
       const label = li.querySelector('label');
@@ -1284,7 +929,6 @@
       input.focus();
       input.select();
     }
-
     function addNewMainItem() {
       const mainList = document.getElementById('main-checklist');
       const newId = 'item' + (mainList.children.length + 1);
@@ -1306,7 +950,6 @@
       updateProgress();
       editMainItem(newItem.querySelector('.edit-main-label'));
     }
-
     function editMainItem(button) {
       const item = button.closest('.checklist-item');
       const label = item.querySelector('.main-label');
@@ -1354,7 +997,6 @@
       input.focus();
       input.select();
     }
-
     function saveChecklistState() {
       const checklistData = {};
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1374,7 +1016,6 @@
       });
       localStorage.setItem('checklistState', JSON.stringify(checklistData));
     }
-
     function loadChecklistState() {
       const checklistData = JSON.parse(localStorage.getItem('checklistState') || '{}');
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1419,7 +1060,6 @@
       });
       updateProgress();
     }
-
     // Функция генерации и показа изображения
     function showChecklistImage() {
       try {
@@ -1519,8 +1159,7 @@
         alert('Ошибка при подготовке изображения.');
       }
     }
-
-    // Кнопка "Если не скачивается" — показывает горизонтальную ленту изображений
+    // Кнопка "Если не скачивается"
     document.getElementById('alternativeDownloadBtn').addEventListener('click', function() {
       const container = document.getElementById('alternativeImagesContainer');
       container.innerHTML = '';
@@ -1538,30 +1177,40 @@
 
       images.forEach((src, index) => {
         const imgBox = document.createElement('div');
-        imgBox.style.flex = '0 0 auto';
-        imgBox.style.width = '280px';
-        imgBox.style.textAlign = 'center';
+        imgBox.className = 'image-box';
 
         const img = document.createElement('img');
         img.src = src;
         img.alt = `Изображение ${index + 1}`;
-        img.style.width = '100%';
-        img.style.height = 'auto';
-        img.style.borderRadius = '8px';
-        img.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+        img.onerror = function() {
+          this.src = 'https://via.placeholder.com/280x400?text=Изображение+не+загружается';
+          this.style.backgroundColor = '#f0f0f0';
+        };
+
+        const link = document.createElement('a');
+        link.href = src;
+        link.download = `чек-лист_альтернатива_${index + 1}.jpg`;
+        link.textContent = 'Скачать изображение';
+        link.style.display = 'inline-block';
+        link.style.marginTop = '10px';
+        link.style.padding = '8px 16px';
+        link.style.backgroundColor = '#4cc9f0';
+        link.style.color = 'white';
+        link.style.borderRadius = '5px';
+        link.style.textDecoration = 'none';
+        link.style.fontSize = '0.9rem';
 
         imgBox.appendChild(img);
+        imgBox.appendChild(link);
         container.appendChild(imgBox);
       });
     });
-
     function resetChecklist() {
       if (confirm('Сбросить все изменения?')) {
         localStorage.removeItem('checklistState');
         location.reload();
       }
     }
-
     // Загрузка состояния при запуске
     document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
