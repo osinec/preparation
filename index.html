@@ -1138,7 +1138,7 @@
     </div>
   </div>
 
-  <!-- Модальное окно для альтернативного изображения -->
+  <!-- Модальное окно для альтернативного изображения с Яндекс.Диска -->
   <div id="fullScreenImageModal" class="modal">
     <div class="modal-content" style="padding: 0; margin: 0; width: 95%; max-width: none; height: 95vh; border-radius: 0;">
       <span class="close" style="position: absolute; top: 10px; right: 10px; z-index: 10;">&times;</span>
@@ -1537,33 +1537,17 @@
       }
     }
 
-    // Кнопка "Если не скачивается" — открывает полноэкранное изображение
+    // Кнопка "Если не скачивается" — открывает изображение с Яндекс.Диска
     document.getElementById('alternativeDownloadBtn').addEventListener('click', function() {
       const modal = document.getElementById('fullScreenImageModal');
       const img = document.getElementById('fullScreenImage');
       const span = modal.querySelector('.close');
-
-      // URL первого альтернативного изображения
       img.src = 'https://disk.yandex.ru/i/-YoZnhaaqnAH6A';
-
-      // Показать модальное окно
       modal.style.display = 'block';
-
-      // Закрытие по крестику
-      span.onclick = function() {
-        modal.style.display = 'none';
-      };
-
-      // Закрытие по клику вне изображения
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
-      };
-
-      // Обработка ошибки загрузки
+      span.onclick = function() { modal.style.display = 'none'; };
+      window.onclick = function(event) { if (event.target == modal) { modal.style.display = 'none'; } };
       img.onerror = function() {
-        this.src = 'https://via.placeholder.com/800x600?text=Изображение+недоступно';
+        this.src = 'https://via.placeholder.com/800x600?text=Файл+недоступен';
       };
     });
 
