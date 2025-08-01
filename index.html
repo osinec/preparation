@@ -176,6 +176,7 @@
       padding: 6px 10px;
       border-radius: 5px;
       background: rgba(255, 255, 255, 0.9);
+      position: relative; /* Для позиционирования кнопок редактирования/удаления */
     }
     .sub-list li:hover {
       background: rgba(67, 97, 238, 0.1);
@@ -214,11 +215,48 @@
       transition: all 0.3s ease;
       flex-grow: 1;
       word-break: break-word;
+      /* Добавляем отступ справа для кнопок */
+      padding-right: 50px;
     }
     .sub-list .checked label {
       color: var(--success);
       text-decoration: line-through;
     }
+    /* Стили для кнопок редактирования и удаления подпунктов */
+    .sub-item-buttons {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 5px; /* Расстояние между кнопками */
+    }
+    .edit-sub-button, .delete-button {
+      background: var(--gray);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 3px 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .edit-sub-button:hover {
+        background: var(--primary-light);
+        transform: scale(1.05);
+    }
+    .delete-button:hover {
+      background: var(--danger);
+      transform: scale(1.05);
+    }
+
+
     .add-button {
       margin-top: 12px;
       padding: 7px 12px;
@@ -299,32 +337,36 @@
       transform: translateY(-1px);
     }
     .delete-button {
-      background: var(--danger);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-      margin-left: 8px;
+      /* background: var(--danger); */
+      /* color: white; */
+      /* border: none; */
+      /* border-radius: 5px; */
+      /* padding: 4px 8px; */
+      /* cursor: pointer; */
+      /* font-size: 0.8rem; */
+      /* transition: all 0.3s ease; */
+      /* display: flex; */
+      /* align-items: center; */
+      /* justify-content: center; */
+      /* width: 22px; */
+      /* height: 22px; */
+      /* flex-shrink: 0; */
+      /* margin-left: 8px; */
     }
-    .delete-button:hover {
+    /* .delete-button:hover {
       background: #d90429;
       transform: scale(1.05);
-    }
+    } */
     .edit-input-container {
       display: flex;
       flex-direction: column;
       margin-top: 12px;
       width: 100%;
       gap: 8px;
+      /* Добавляем флекс для размещения кнопок в ряд */
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
     }
     .edit-input {
       padding: 10px 12px;
@@ -334,11 +376,30 @@
       font-size: 1rem;
       font-family: 'Montserrat', sans-serif;
       transition: all 0.3s ease;
+      flex-grow: 1; /* Поле ввода занимает всё доступное пространство */
     }
     .edit-input:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+    /* Новые стили для кнопки удаления главного пункта */
+    .delete-main-button {
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      white-space: nowrap; /* Предотвращаем перенос текста */
+      margin-left: 8px; /* Отступ слева от поля ввода */
+    }
+    .delete-main-button:hover {
+      background: #d90429;
+      transform: translateY(-1px);
     }
     .download-button {
       display: block;
@@ -593,6 +654,30 @@
       .sub-list li {
         padding: 5px 8px;
       }
+       .sub-list label {
+          padding-right: 45px; /* Адаптируем отступ для кнопок */
+       }
+       .sub-item-buttons {
+           right: 3px;
+       }
+       .edit-sub-button, .delete-button {
+         padding: 2px 5px;
+         font-size: 0.7rem;
+         width: 18px;
+         height: 18px;
+       }
+       /* Адаптация для редактирования главного пункта на мобильных */
+       .edit-input-container {
+          flex-direction: column;
+          align-items: stretch;
+       }
+       .edit-input {
+          margin-bottom: 8px;
+       }
+       .delete-main-button {
+          margin-left: 0;
+          width: 100%;
+       }
       .add-button, .ok-button, .delete-button {
         font-size: 0.85rem;
       }
@@ -666,14 +751,26 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Определите цель выступления (информировать, убедить, вдохновить и т.д.).</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Изучите аудиторию: возраст, интересы, уровень знаний по теме.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Сформулируйте ключевой посыл (основная идея, которую хотите донести).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -690,22 +787,42 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Составьте структуру выступления: введение, основная часть, заключение.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подготовьте тезисы или полный текст выступления.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Выберите ключевые факты, примеры, истории или данные для поддержки тезисов.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте, чтобы информация была актуальной и достоверной.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Добавьте элементы вовлечения (вопросы к аудитории, юмор, визуальные образы).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -722,14 +839,26 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подготовьте слайды или другие визуальные материалы (если требуется).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Убедитесь, что слайды минималистичны, читаемы и содержат только ключевую информацию.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте техническую совместимость (шрифты, форматы, проектор).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -746,22 +875,42 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Практикуйте выступление перед зеркалом, друзьями или запишите на видео.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Отрепетируйте тайминг: уложитесь в отведенное время.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте произношение сложных слов и терминов.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Потренируйтесь в управлении голосом: громкость, интонация, паузы.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Отработайте жесты и мимику для усиления речи.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -778,14 +927,26 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подумайте о возможных вопросах от аудитории.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подготовьте краткие и четкие ответы на сложные или спорные темы.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Решите, как будете реагировать на неожиданные вопросы (например, "Я уточню этот момент позже").</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -802,18 +963,34 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте оборудование: микрофон, проектор, ноутбук, кликер.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Убедитесь, что у вас есть резервные копии материалов (USB, облако).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте подключение к интернету (если требуется).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Посетите место выступления заранее, чтобы ознакомиться с пространством.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -830,18 +1007,34 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подготовьте подходящую одежду: чистую, удобную, соответствующую событию.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Выспитесь перед выступлением.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Сделайте разминку для голоса и тела (дыхательные упражнения, легкая растяжка).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Подготовьте воду или чай для поддержания голоса во время выступления.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -858,22 +1051,42 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Прибудьте на место заранее (за 30–60 минут).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проверьте технику и материалы еще раз.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Познакомьтесь с организаторами и уточните тайминг.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Сделайте несколько глубоких вдохов для снятия волнения.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -890,18 +1103,34 @@
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Поблагодарите аудиторию и организаторов.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Соберите обратную связь (вопросы, комментарии, анкеты).</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Проанализируйте свое выступление: что удалось, что можно улучшить.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
               <label>Сохраните материалы для будущих выступлений.</label>
+               <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <!-- Нет кнопки удаления для стандартных пунктов -->
+              </div>
             </li>
           </ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
@@ -1160,13 +1389,30 @@
         checkbox.onchange = function() { toggleChecked(this); };
         const label = document.createElement('label');
         label.textContent = newItemText;
+
+        // Создаем контейнер для кнопок
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'sub-item-buttons';
+
+        // Создаем кнопку редактирования
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-sub-button';
+        editButton.textContent = '✏️';
+        editButton.onclick = function() { editSubItem(this); };
+
+        // Создаем кнопку удаления
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-button';
         deleteButton.textContent = '×';
         deleteButton.onclick = function() { removeSubItem(this); };
+
+        // Добавляем кнопки в контейнер
+        buttonsContainer.appendChild(editButton);
+        buttonsContainer.appendChild(deleteButton);
+
         li.appendChild(checkbox);
         li.appendChild(label);
-        li.appendChild(deleteButton);
+        li.appendChild(buttonsContainer); // Добавляем контейнер с кнопками
         subListUl.appendChild(li);
         input.value = '';
         input.focus();
@@ -1175,11 +1421,78 @@
       }
     }
     function removeSubItem(button) {
-      const li = button.parentElement;
+      const li = button.parentElement.parentElement; // button -> .sub-item-buttons -> li
       li.remove();
       saveChecklistState();
       updateProgress();
     }
+     // --- ФУНКЦИЯ: Редактировать подпункт ---
+    function editSubItem(button) {
+      const li = button.closest('li'); // Находим родительский элемент <li>
+      const label = li.querySelector('label');
+      const currentText = label.textContent;
+
+      // Создаем контейнер для поля ввода и кнопки
+      const editContainer = document.createElement('div');
+      editContainer.className = 'edit-input-container';
+
+      // Создаем поле ввода
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'edit-input';
+      input.value = currentText;
+
+      // Создаем кнопку "Сохранить"
+      const saveButton = document.createElement('button');
+      saveButton.className = 'ok-button';
+      saveButton.textContent = 'Сохранить';
+
+      // Функция сохранения изменений
+      const saveChanges = function() {
+        if (input.value.trim()) {
+          label.textContent = input.value.trim();
+          // Удаляем контейнер с полем ввода и кнопкой
+          editContainer.remove();
+          // Показываем метку и кнопки снова
+          label.style.display = 'block';
+          const buttonsContainer = li.querySelector('.sub-item-buttons');
+          if (buttonsContainer) buttonsContainer.style.display = 'flex';
+          // Сохраняем изменения
+          saveChecklistState();
+        }
+      };
+
+      // Обработчик клика на кнопке "Сохранить"
+      saveButton.onclick = saveChanges;
+
+      // Обработчик нажатия Enter в поле ввода
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          saveChanges();
+        }
+      });
+
+      // Добавляем элементы в контейнер
+      editContainer.appendChild(input);
+      editContainer.appendChild(saveButton);
+
+      // Скрываем метку и кнопки
+      label.style.display = 'none';
+      const buttonsContainer = li.querySelector('.sub-item-buttons');
+      if (buttonsContainer) buttonsContainer.style.display = 'none';
+
+      // Вставляем контейнер редактирования перед контейнером кнопок или в конец li
+      if (buttonsContainer) {
+          li.insertBefore(editContainer, buttonsContainer);
+      } else {
+          li.appendChild(editContainer);
+      }
+
+      // Фокусируем поле ввода и выделяем текст
+      input.focus();
+      input.select();
+    }
+
     function addNewMainItem() {
       const mainList = document.getElementById('main-checklist');
       const newId = 'item' + (mainList.children.length + 1);
@@ -1201,42 +1514,98 @@
       updateProgress();
       editMainItem(newItem.querySelector('.edit-main-label'));
     }
+    // --- ФУНКЦИЯ: Редактировать главный пункт ---
     function editMainItem(button) {
       const item = button.closest('.checklist-item');
       const label = item.querySelector('.main-label');
       const currentText = label.textContent;
+
+      // Создаем контейнер для поля ввода и кнопок
       const editContainer = document.createElement('div');
       editContainer.className = 'edit-input-container';
+
+      // Создаем поле ввода
       const input = document.createElement('input');
       input.type = 'text';
       input.className = 'edit-input';
       input.value = currentText;
+
+      // Создаем кнопку "Сохранить"
       const saveButton = document.createElement('button');
       saveButton.className = 'ok-button';
       saveButton.textContent = 'Сохранить';
-      saveButton.onclick = function() {
+
+      // Создаем кнопку "Удалить" (крестик)
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'delete-main-button';
+      deleteButton.textContent = 'Удалить ❌';
+
+      // Функция сохранения изменений
+      const saveChanges = function() {
         if (input.value.trim()) {
           label.textContent = input.value.trim();
+          // Удаляем контейнер с полем ввода и кнопками
           editContainer.remove();
+          // Показываем метку и кнопку редактирования снова
           label.style.display = 'inline';
           button.style.display = 'block';
+          // Сохраняем изменения
           saveChecklistState();
         }
       };
+
+      // Обработчик клика на кнопке "Сохранить"
+      saveButton.onclick = saveChanges;
+
+      // Обработчик нажатия Enter в поле ввода
       input.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && this.value.trim()) {
-          saveButton.click();
+        if (e.key === 'Enter') {
+          saveChanges();
         }
       });
+
+      // Функция удаления главного пункта
+      const deleteItem = function() {
+        if (confirm('Вы уверены, что хотите удалить этот раздел и все его подпункты?')) {
+          item.remove();
+          saveChecklistState();
+          updateProgress();
+        }
+      };
+
+      // Обработчик клика на кнопке "Удалить"
+      deleteButton.onclick = deleteItem;
+
+      // Добавляем элементы в контейнер
       editContainer.appendChild(input);
       editContainer.appendChild(saveButton);
+      editContainer.appendChild(deleteButton); // Добавляем кнопку удаления
+
+      // Скрываем метку и кнопку редактирования
       label.style.display = 'none';
       button.style.display = 'none';
+
+      // Вставляем контейнер редактирования перед списком подпунктов
       const subList = item.querySelector('.sub-list');
       item.insertBefore(editContainer, subList);
+
+      // Фокусируем поле ввода и выделяем текст
       input.focus();
       input.select();
     }
+
+    // --- ФУНКЦИЯ: Удалить главный пункт ---
+    function removeMainItem(button) {
+        // Эта функция больше не используется напрямую, так как кнопка удаления теперь внутри editMainItem
+        // Но оставлена для совместимости или будущего расширения
+        const item = button.closest('.checklist-item');
+        if (confirm('Вы уверены, что хотите удалить этот раздел и все его подпункты?')) {
+            item.remove();
+            saveChecklistState();
+            updateProgress();
+        }
+    }
+
     function saveChecklistState() {
       const checklistData = {};
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1282,15 +1651,33 @@
             checkbox.onchange = function() { toggleChecked(this); };
             const label = document.createElement('label');
             label.textContent = subItem.label;
-            li.appendChild(checkbox);
-            li.appendChild(label);
+
+             // Создаем контейнер для кнопок
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'sub-item-buttons';
+
+            // Создаем кнопку редактирования
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-sub-button';
+            editButton.textContent = '✏️';
+            editButton.onclick = function() { editSubItem(this); };
+
+            // Создаем кнопку удаления (только для пользовательских пунктов)
             if (subItem.isCustom) {
               const deleteButton = document.createElement('button');
               deleteButton.className = 'delete-button';
               deleteButton.textContent = '×';
               deleteButton.onclick = function() { removeSubItem(this); };
-              li.appendChild(deleteButton);
+              buttonsContainer.appendChild(deleteButton);
             }
+
+            // Добавляем кнопку редактирования
+            buttonsContainer.appendChild(editButton);
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+            li.appendChild(buttonsContainer); // Добавляем контейнер с кнопками
+
             subListUl.appendChild(li);
             if (subItem.checked) {
               label.classList.add('checked');
