@@ -1156,7 +1156,7 @@
     function toggleSubList(header) {
       const subList = header.parentElement.querySelector('.sub-list');
       subList.classList.toggle('active');
-      saveChecklistState(); // Сохраняем состояние
+      saveChecklistState();
       updateProgress();
     }
 
@@ -1408,8 +1408,6 @@
             checkbox.onchange = function() { toggleChecked(this); };
             const label = document.createElement('label');
             label.textContent = subItem.label;
-            if (subItem.checked) label.classList.add('checked');
-
             const buttonsContainer = document.createElement('div');
             buttonsContainer.className = 'sub-item-buttons';
             const editButton = document.createElement('button');
@@ -1426,7 +1424,7 @@
             li.appendChild(checkbox);
             li.appendChild(label);
             li.appendChild(buttonsContainer);
-            subListUl.appendChild(li);
+            if (subItem.checked) label.classList.add('checked');
           });
         }
       });
