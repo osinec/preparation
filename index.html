@@ -1014,4 +1014,534 @@
           <input type="checkbox" id="item8" onchange="toggleChecked(this)">
           <label class="main-label">День выступления</label>
         </div>
-        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button
+        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <div class="sub-list">
+          <ul>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Прибудьте на место заранее (за 30–60 минут).</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проверьте технику и материалы еще раз.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Познакомьтесь с организаторами и уточните тайминг.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сделайте несколько глубоких вдохов для снятия волнения.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Улыбнитесь и настройтесь на позитивное взаимодействие с аудиторией.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+          </ul>
+          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+        </div>
+      </li>
+      <!-- Пункт 9 -->
+      <li class="checklist-item">
+        <div class="checklist-header" onclick="toggleSubList(this)">
+          <input type="checkbox" id="item9" onchange="toggleChecked(this)">
+          <label class="main-label">После выступления</label>
+        </div>
+        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <div class="sub-list">
+          <ul>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Поблагодарите аудиторию и организаторов.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Соберите обратную связь (вопросы, комментарии, анкеты).</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Проанализируйте свое выступление: что удалось, что можно улучшить.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" onchange="toggleChecked(this)">
+              <label>Сохраните материалы для будущих выступлений.</label>
+              <div class="sub-item-buttons">
+                <button class="edit-sub-button" onclick="editSubItem(this)">✏️</button>
+                <button class="delete-button" onclick="removeSubItem(this)">×</button>
+              </div>
+            </li>
+          </ul>
+          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+        </div>
+      </li>
+    </ul>
+    <button class="add-main-item-button" onclick="addNewMainItem()">➕ Добавить новый раздел</button>
+    <button class="download-button" onclick="showChecklistImage()">📷 Показать и скачать чек-лист (JPG)</button>
+    <button class="reset-button" onclick="resetChecklist()">🔄 Сбросить все изменения</button>
+  </div>
+
+  <!-- Скрытый шаблон для изображения -->
+  <div id="image-template">
+    <h2>Чек-лист для подготовки к выступлению</h2>
+    <div id="image-content"></div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <canvas id="modalImageCanvas"></canvas>
+      <br>
+      <button id="downloadImageBtn">💾 Скачать изображение</button>
+      <p style="color: #ccc; font-size: 0.9rem; margin-top: 10px;">
+        Если изображение не скачивается → Нажмите на 3 точки в правом верхнем углу → Настройки → Выключите "Использовать встроенный браузер" → Запустите заново
+      </p>
+      <div class="loading" id="modalLoading">
+        <div class="spinner"></div>
+        <p>Подготовка файла к скачиванию...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    function updateProgress() {
+      const totalItems = document.querySelectorAll('.checklist-item input[type="checkbox"], .sub-list input[type="checkbox"]').length;
+      const checkedItems = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked, .sub-list input[type="checkbox"]:checked').length;
+      const progress = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `${progress}% завершено`;
+      const progressBar = document.getElementById('progressBar');
+      if (progress < 30) {
+        progressBar.style.background = 'linear-gradient(90deg, #ef233c, #f72585)';
+      } else if (progress < 70) {
+        progressBar.style.background = 'linear-gradient(90deg, #f8961e, #f9c74f)';
+      } else {
+        progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
+      }
+    }
+
+    function toggleSubList(header) {
+      const subList = header.parentElement.querySelector('.sub-list');
+      subList.classList.toggle('active');
+      saveChecklistState(); // Сохраняем состояние
+      updateProgress();
+    }
+
+    function toggleChecked(checkbox) {
+      const label = checkbox.nextElementSibling;
+      if (checkbox.checked) {
+        label.classList.add('checked');
+      } else {
+        label.classList.remove('checked');
+      }
+      saveChecklistState();
+      updateProgress();
+    }
+
+    function showAddInput(button) {
+      const subList = button.parentElement;
+      let inputContainer = subList.querySelector('.add-input-container');
+      if (inputContainer) {
+        inputContainer.remove();
+        return;
+      }
+      inputContainer = document.createElement('div');
+      inputContainer.className = 'add-input-container';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'add-input';
+      input.placeholder = 'Введите новый подпункт';
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value.trim()) {
+          addNewSubItem(this);
+        }
+      });
+      const okButton = document.createElement('button');
+      okButton.className = 'ok-button';
+      okButton.textContent = 'Добавить';
+      okButton.onclick = function() {
+        if (input.value.trim()) {
+          addNewSubItem(input);
+        }
+      };
+      inputContainer.appendChild(input);
+      inputContainer.appendChild(okButton);
+      subList.insertBefore(inputContainer, button);
+      input.focus();
+    }
+
+    function addNewSubItem(input) {
+      const subListUl = input.closest('.sub-list').querySelector('ul');
+      const newItemText = input.value.trim();
+      if (newItemText) {
+        const li = document.createElement('li');
+        li.className = 'custom-item';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.onchange = function() { toggleChecked(this); };
+        const label = document.createElement('label');
+        label.textContent = newItemText;
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'sub-item-buttons';
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-sub-button';
+        editButton.textContent = '✏️';
+        editButton.onclick = function() { editSubItem(this); };
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+        deleteButton.textContent = '×';
+        deleteButton.onclick = function() { removeSubItem(this); };
+        buttonsContainer.appendChild(editButton);
+        buttonsContainer.appendChild(deleteButton);
+        li.appendChild(checkbox);
+        li.appendChild(label);
+        li.appendChild(buttonsContainer);
+        subListUl.appendChild(li);
+        input.value = '';
+        input.focus();
+        saveChecklistState();
+        updateProgress();
+      }
+    }
+
+    function removeSubItem(button) {
+      const li = button.closest('li');
+      if (confirm('Удалить этот подпункт?')) {
+        li.remove();
+        saveChecklistState();
+        updateProgress();
+      }
+    }
+
+    function editSubItem(button) {
+      const li = button.closest('li');
+      const label = li.querySelector('label');
+      const currentText = label.textContent;
+      const editContainer = document.createElement('div');
+      editContainer.className = 'edit-input-container';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'edit-input';
+      input.value = currentText;
+      const saveButton = document.createElement('button');
+      saveButton.className = 'ok-button';
+      saveButton.textContent = 'Сохранить';
+      const saveChanges = function() {
+        if (input.value.trim()) {
+          label.textContent = input.value.trim();
+          editContainer.remove();
+          label.style.display = 'block';
+          const buttonsContainer = li.querySelector('.sub-item-buttons');
+          if (buttonsContainer) buttonsContainer.style.display = 'flex';
+          saveChecklistState();
+        }
+      };
+      saveButton.onclick = saveChanges;
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') saveChanges();
+      });
+      editContainer.appendChild(input);
+      editContainer.appendChild(saveButton);
+      label.style.display = 'none';
+      const buttonsContainer = li.querySelector('.sub-item-buttons');
+      if (buttonsContainer) buttonsContainer.style.display = 'none';
+      if (buttonsContainer) {
+        li.insertBefore(editContainer, buttonsContainer);
+      } else {
+        li.appendChild(editContainer);
+      }
+      input.focus();
+      input.select();
+    }
+
+    function addNewMainItem() {
+      const mainList = document.getElementById('main-checklist');
+      const newId = 'item' + (mainList.children.length + 1);
+      const newItem = document.createElement('li');
+      newItem.className = 'checklist-item';
+      newItem.innerHTML = `
+        <div class="checklist-header" onclick="toggleSubList(this)">
+          <input type="checkbox" id="${newId}" onchange="toggleChecked(this)">
+          <label class="main-label">Новый раздел</label>
+        </div>
+        <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
+        <div class="sub-list">
+          <ul></ul>
+          <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
+        </div>
+      `;
+      mainList.appendChild(newItem);
+      saveChecklistState();
+      updateProgress();
+      editMainItem(newItem.querySelector('.edit-main-label'));
+    }
+
+    function editMainItem(button) {
+      const item = button.closest('.checklist-item');
+      const label = item.querySelector('.main-label');
+      const currentText = label.textContent;
+      const editContainer = document.createElement('div');
+      editContainer.className = 'edit-input-container';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'edit-input';
+      input.value = currentText;
+      const saveButton = document.createElement('button');
+      saveButton.className = 'ok-button';
+      saveButton.textContent = 'Сохранить';
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'delete-main-button';
+      deleteButton.textContent = 'Удалить ❌';
+      const saveChanges = function() {
+        if (input.value.trim()) {
+          label.textContent = input.value.trim();
+          editContainer.remove();
+          label.style.display = 'inline';
+          button.style.display = 'block';
+          saveChecklistState();
+        }
+      };
+      saveButton.onclick = saveChanges;
+      input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') saveChanges();
+      });
+      const deleteItem = function() {
+        if (confirm('Удалить этот раздел и все подпункты?')) {
+          item.remove();
+          saveChecklistState();
+          updateProgress();
+        }
+      };
+      deleteButton.onclick = deleteItem;
+      editContainer.appendChild(input);
+      editContainer.appendChild(saveButton);
+      editContainer.appendChild(deleteButton);
+      label.style.display = 'none';
+      button.style.display = 'none';
+      const subList = item.querySelector('.sub-list');
+      item.insertBefore(editContainer, subList);
+      input.focus();
+      input.select();
+    }
+
+    function saveChecklistState() {
+      const checklistData = {};
+      document.querySelectorAll('.checklist-item').forEach((item, index) => {
+        const itemId = `item${index + 1}`;
+        const subList = item.querySelector('.sub-list');
+        checklistData[itemId] = {
+          checked: item.querySelector('input[type="checkbox"]').checked,
+          mainLabel: item.querySelector('.main-label').textContent,
+          subListOpen: subList.classList.contains('active'),
+          subItems: []
+        };
+        const subListUl = subList.querySelector('ul');
+        subListUl.querySelectorAll('li').forEach(li => {
+          const label = li.querySelector('label').textContent;
+          const checked = li.querySelector('input[type="checkbox"]').checked;
+          const isCustom = li.classList.contains('custom-item');
+          checklistData[itemId].subItems.push({ label, checked, isCustom });
+        });
+      });
+      localStorage.setItem('checklistState', JSON.stringify(checklistData));
+    }
+
+    function loadChecklistState() {
+      const checklistData = JSON.parse(localStorage.getItem('checklistState') || '{}');
+      document.querySelectorAll('.checklist-item').forEach((item, index) => {
+        const itemId = `item${index + 1}`;
+        const data = checklistData[itemId];
+        if (data) {
+          const mainCheckbox = item.querySelector('input[type="checkbox"]');
+          const mainLabel = item.querySelector('.main-label');
+          const subList = item.querySelector('.sub-list');
+
+          mainCheckbox.checked = data.checked;
+          mainLabel.textContent = data.mainLabel;
+          if (data.checked) mainLabel.classList.add('checked');
+
+          if (data.subListOpen) {
+            subList.classList.add('active');
+          }
+
+          const subListUl = subList.querySelector('ul');
+          subListUl.innerHTML = '';
+          data.subItems.forEach(subItem => {
+            const li = document.createElement('li');
+            if (subItem.isCustom) li.className = 'custom-item';
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = subItem.checked;
+            checkbox.onchange = function() { toggleChecked(this); };
+            const label = document.createElement('label');
+            label.textContent = subItem.label;
+            if (subItem.checked) label.classList.add('checked');
+
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'sub-item-buttons';
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-sub-button';
+            editButton.textContent = '✏️';
+            editButton.onclick = function() { editSubItem(this); };
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-button';
+            deleteButton.textContent = '×';
+            deleteButton.onclick = function() { removeSubItem(this); };
+            buttonsContainer.appendChild(editButton);
+            buttonsContainer.appendChild(deleteButton);
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+            li.appendChild(buttonsContainer);
+            subListUl.appendChild(li);
+          });
+        }
+      });
+      updateProgress();
+    }
+
+    function showChecklistImage() {
+      try {
+        const mainItems = document.querySelectorAll('.checklist-item');
+        const imageContent = document.getElementById('image-content');
+        imageContent.innerHTML = '';
+        mainItems.forEach(item => {
+          const mainLabel = item.querySelector('.main-label').textContent.replace(/<br>/g, ' ');
+          const mainItemDiv = document.createElement('div');
+          mainItemDiv.className = 'list-item';
+          mainItemDiv.textContent = mainLabel;
+          imageContent.appendChild(mainItemDiv);
+          const subItems = item.querySelectorAll('.sub-list li');
+          subItems.forEach(subItem => {
+            const subLabel = subItem.querySelector('label').textContent;
+            const subItemDiv = document.createElement('div');
+            subItemDiv.className = 'sub-item';
+            subItemDiv.textContent = subLabel;
+            imageContent.appendChild(subItemDiv);
+          });
+          imageContent.appendChild(document.createElement('br'));
+        });
+        const template = document.getElementById('image-template');
+        template.style.display = 'block';
+        const targetDPI = 96;
+        const scale = window.devicePixelRatio || 1;
+        const templateWidthMM = 210;
+        const expectedWidthPx = (templateWidthMM / 25.4) * targetDPI;
+        const canvasOptions = {
+          scale: scale,
+          backgroundColor: '#ffffff',
+          logging: false,
+          useCORS: true,
+          allowTaint: true,
+          width: expectedWidthPx,
+          windowWidth: expectedWidthPx
+        };
+        setTimeout(() => {
+          html2canvas(template, canvasOptions).then(canvas => {
+            template.style.display = 'none';
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImageCanvas');
+            const downloadBtn = document.getElementById('downloadImageBtn');
+            const span = document.getElementsByClassName("close")[0];
+            const ctx = modalImg.getContext('2d');
+            ctx.clearRect(0, 0, modalImg.width, modalImg.height);
+            modalImg.width = canvas.width;
+            modalImg.height = canvas.height;
+            ctx.drawImage(canvas, 0, 0);
+            downloadBtn.disabled = false;
+            downloadBtn.textContent = "💾 Скачать изображение";
+            modal.style.display = "block";
+            span.onclick = function() { modal.style.display = "none"; };
+            window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; } };
+            downloadBtn.onclick = function() {
+              downloadBtn.disabled = true;
+              downloadBtn.textContent = "Подготовка...";
+              const loadingIndicator = document.getElementById('modalLoading');
+              loadingIndicator.style.display = 'block';
+              canvas.toBlob(function(blob) {
+                if (!blob) {
+                  alert('Ошибка при создании изображения.');
+                  loadingIndicator.style.display = 'none';
+                  downloadBtn.disabled = false;
+                  downloadBtn.textContent = "💾 Скачать изображение";
+                  return;
+                }
+                try {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.style.display = 'none';
+                  a.href = url;
+                  a.download = 'чек-лист_выступление_A4.jpg';
+                  document.body.appendChild(a);
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                  document.body.removeChild(a);
+                  loadingIndicator.style.display = 'none';
+                  downloadBtn.disabled = false;
+                  downloadBtn.textContent = "💾 Скачать изображение";
+                } catch (error) {
+                  alert('Ошибка при скачивании.');
+                  loadingIndicator.style.display = 'none';
+                  downloadBtn.disabled = false;
+                  downloadBtn.textContent = "💾 Скачать изображение";
+                }
+              }, 'image/jpeg', 0.92);
+            };
+          }).catch(error => {
+            template.style.display = 'none';
+            alert('Ошибка при создании изображения.');
+          });
+        }, 100);
+      } catch (error) {
+        const template = document.getElementById('image-template');
+        if (template) template.style.display = 'none';
+        alert('Ошибка при подготовке изображения.');
+      }
+    }
+
+    function resetChecklist() {
+      if (confirm('Сбросить все изменения?')) {
+        localStorage.removeItem('checklistState');
+        location.reload();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      loadChecklistState();
+    });
+  </script>
+</body>
+</html>
