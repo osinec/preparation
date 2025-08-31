@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1388,44 +1389,43 @@
           const mainCheckbox = item.querySelector('input[type="checkbox"]');
           const mainLabel = item.querySelector('.main-label');
           const subList = item.querySelector('.sub-list');
-
           mainCheckbox.checked = data.checked;
           mainLabel.textContent = data.mainLabel;
           if (data.checked) mainLabel.classList.add('checked');
-
           if (data.subListOpen) {
             subList.classList.add('active');
           }
-
           const subListUl = subList.querySelector('ul');
-          subListUl.innerHTML = '';
-          data.subItems.forEach(subItem => {
-            const li = document.createElement('li');
-            if (subItem.isCustom) li.className = 'custom-item';
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.checked = subItem.checked;
-            checkbox.onchange = function() { toggleChecked(this); };
-            const label = document.createElement('label');
-            label.textContent = subItem.label;
-            const buttonsContainer = document.createElement('div');
-            buttonsContainer.className = 'sub-item-buttons';
-            const editButton = document.createElement('button');
-            editButton.className = 'edit-sub-button';
-            editButton.textContent = '✏️';
-            editButton.onclick = function() { editSubItem(this); };
-            const deleteButton = document.createElement('button');
-            deleteButton.className = 'delete-button';
-            deleteButton.textContent = '×';
-            deleteButton.onclick = function() { removeSubItem(this); };
-            buttonsContainer.appendChild(editButton);
-            buttonsContainer.appendChild(deleteButton);
-
-            li.appendChild(checkbox);
-            li.appendChild(label);
-            li.appendChild(buttonsContainer);
-            if (subItem.checked) label.classList.add('checked');
-          });
+          if (data.subItems && data.subItems.length > 0) {
+            subListUl.innerHTML = '';
+            data.subItems.forEach(subItem => {
+              const li = document.createElement('li');
+              if (subItem.isCustom) li.className = 'custom-item';
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.checked = subItem.checked;
+              checkbox.onchange = function() { toggleChecked(this); };
+              const label = document.createElement('label');
+              label.textContent = subItem.label;
+              const buttonsContainer = document.createElement('div');
+              buttonsContainer.className = 'sub-item-buttons';
+              const editButton = document.createElement('button');
+              editButton.className = 'edit-sub-button';
+              editButton.textContent = '✏️';
+              editButton.onclick = function() { editSubItem(this); };
+              const deleteButton = document.createElement('button');
+              deleteButton.className = 'delete-button';
+              deleteButton.textContent = '×';
+              deleteButton.onclick = function() { removeSubItem(this); };
+              buttonsContainer.appendChild(editButton);
+              buttonsContainer.appendChild(deleteButton);
+              li.appendChild(checkbox);
+              li.appendChild(label);
+              li.appendChild(buttonsContainer);
+              subListUl.appendChild(li);
+              if (subItem.checked) label.classList.add('checked');
+            });
+          }
         }
       });
       updateProgress();
@@ -1543,3 +1543,4 @@
   </script>
 </body>
 </html>
+```
