@@ -143,9 +143,8 @@
       background: var(--primary);
       transform: scale(1.05);
     }
-    /* Изменение: убрано display: none; */
     .sub-list {
-      /* display: none; — УБРАНО */
+      display: none;
       margin-left: 20px;
       margin-top: 12px;
       font-size: 0.95rem;
@@ -154,12 +153,16 @@
       padding: 12px;
       border-radius: 8px;
       box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
-      opacity: 1; /* Всегда видим */
-      transform: translateY(0); /* Всегда видим */
+      opacity: 0;
+      transform: translateY(-5px);
       transition: all 0.3s ease;
       border-left: 2px solid var(--primary-light);
     }
-    /* Убрано: .sub-list.active — теперь все подсписки всегда активны */
+    .sub-list.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
     .sub-list ul {
       list-style-type: none;
       padding-left: 0;
@@ -698,7 +701,6 @@
     </div>
     <div class="progress-text" id="progressText">0% завершено</div>
     <ul id="main-checklist">
-      <!-- Все подпункты будут видны сразу -->
       <!-- Пункт 1 -->
       <li class="checklist-item">
         <div class="checklist-header" onclick="toggleSubList(this)">
@@ -706,7 +708,7 @@
           <label class="main-label">Определение цели<br>и аудитории</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active"> <!-- Добавлен класс active -->
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -743,7 +745,7 @@
           <label class="main-label">Подготовка содержания</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active"> <!-- active -->
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -789,7 +791,6 @@
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
       </li>
-      <!-- Остальные пункты аналогично — sub-list имеет класс active -->
       <!-- Пункт 3 -->
       <li class="checklist-item">
         <div class="checklist-header" onclick="toggleSubList(this)">
@@ -797,7 +798,7 @@
           <label class="main-label">Создание визуальных материалов</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -834,7 +835,7 @@
           <label class="main-label">Репетиция</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -887,7 +888,7 @@
           <label class="main-label">Подготовка к вопросам</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -924,7 +925,7 @@
           <label class="main-label">Техническая подготовка</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -969,7 +970,7 @@
           <label class="main-label">Личная подготовка</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -1014,7 +1015,7 @@
           <label class="main-label">День выступления</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -1067,7 +1068,7 @@
           <label class="main-label">После выступления</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active">
+        <div class="sub-list">
           <ul>
             <li>
               <input type="checkbox" onchange="toggleChecked(this)">
@@ -1148,15 +1149,11 @@
         progressBar.style.background = 'linear-gradient(90deg, #4cc9f0, #4895ef)';
       }
     }
-
-    // Функция toggleSubList остаётся для совместимости, но не нужна, если всё всегда открыто
     function toggleSubList(header) {
       const subList = header.parentElement.querySelector('.sub-list');
-      // Можно оставить возможность сворачивать, если хотите
       subList.classList.toggle('active');
       updateProgress();
     }
-
     function toggleChecked(checkbox) {
       const label = checkbox.nextElementSibling;
       if (checkbox.checked) {
@@ -1167,7 +1164,6 @@
       saveChecklistState();
       updateProgress();
     }
-
     function showAddInput(button) {
       const subList = button.parentElement;
       let inputContainer = subList.querySelector('.add-input-container');
@@ -1199,7 +1195,6 @@
       subList.insertBefore(inputContainer, button);
       input.focus();
     }
-
     function addNewSubItem(input) {
       const subListUl = input.closest('.sub-list').querySelector('ul');
       const newItemText = input.value.trim();
@@ -1233,7 +1228,6 @@
         updateProgress();
       }
     }
-
     function removeSubItem(button) {
       const li = button.closest('li');
       if (confirm('Удалить этот подпункт?')) {
@@ -1242,7 +1236,6 @@
         updateProgress();
       }
     }
-
     function editSubItem(button) {
       const li = button.closest('li');
       const label = li.querySelector('label');
@@ -1283,7 +1276,6 @@
       input.focus();
       input.select();
     }
-
     function addNewMainItem() {
       const mainList = document.getElementById('main-checklist');
       const newId = 'item' + (mainList.children.length + 1);
@@ -1295,7 +1287,7 @@
           <label class="main-label">Новый раздел</label>
         </div>
         <button class="edit-main-label" onclick="editMainItem(this)">✏️ Изменить</button>
-        <div class="sub-list active"> <!-- Новый раздел тоже открыт -->
+        <div class="sub-list">
           <ul></ul>
           <button class="add-button" onclick="showAddInput(this)">➕ Добавить пункт</button>
         </div>
@@ -1305,7 +1297,6 @@
       updateProgress();
       editMainItem(newItem.querySelector('.edit-main-label'));
     }
-
     function editMainItem(button) {
       const item = button.closest('.checklist-item');
       const label = item.querySelector('.main-label');
@@ -1353,7 +1344,6 @@
       input.focus();
       input.select();
     }
-
     function saveChecklistState() {
       const checklistData = {};
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1373,7 +1363,6 @@
       });
       localStorage.setItem('checklistState', JSON.stringify(checklistData));
     }
-
     function loadChecklistState() {
       const checklistData = JSON.parse(localStorage.getItem('checklistState') || '{}');
       document.querySelectorAll('.checklist-item').forEach((item, index) => {
@@ -1417,7 +1406,6 @@
       });
       updateProgress();
     }
-
     function showChecklistImage() {
       try {
         const mainItems = document.querySelectorAll('.checklist-item');
@@ -1516,18 +1504,14 @@
         alert('Ошибка при подготовке изображения.');
       }
     }
-
     function resetChecklist() {
       if (confirm('Сбросить все изменения?')) {
         localStorage.removeItem('checklistState');
         location.reload();
       }
     }
-
     document.addEventListener('DOMContentLoaded', function() {
       loadChecklistState();
-      // Убедимся, что все подсписки открыты при загрузке
-      document.querySelectorAll('.sub-list').forEach(el => el.classList.add('active'));
     });
   </script>
 </body>
